@@ -26,3 +26,4 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, suffix, prefix, trend
 }
 
 export default StatCard
+export { StatCard }

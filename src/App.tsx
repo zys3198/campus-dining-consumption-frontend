@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, Spin } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import MainLayout from './components/layout/MainLayout'
 import LoginPage from './pages/LoginPage'
@@ -9,7 +9,7 @@ import LoginPage from './pages/LoginPage'
 import StudentDashboardPage from './pages/student/StudentDashboardPage'
 import TransactionListPage from './pages/student/TransactionListPage'
 import NutritionAnalysisPage from './pages/student/NutritionAnalysisPage'
-import ProfilePage from './pages/student/ProfilePage'
+import ProfilePage from './pages/ProfilePage'
 
 // 经理页面
 import OperationsDashboardPage from './pages/manager/OperationsDashboardPage'
@@ -27,6 +27,17 @@ import StudentManagePage from './pages/admin/manage/StudentManagePage'
 
 import { useAuthStore } from './stores/auth'
 
+const RootRedirect: React.FC = () => {
+  const { token, user } = useAuthStore()
+  if (!token || !user) return <Navigate to="/login" replace />
+  const roleRoutes: Record<string, string> = {
+    student: '/student/dashboard',
+    manager: '/manager/operations',
+    admin: '/admin/dashboard',
+  }
+  return <Navigate to={roleRoutes[user.role] || '/login'} replace />
+}
+
 const RoleRoute: React.FC<{ role: string; children?: React.ReactNode }> = ({ role, children }) => {
   const { token, user } = useAuthStore()
   if (!token) return <Navigate to="/login" replace />
@@ -35,11 +46,31 @@ const RoleRoute: React.FC<{ role: string; children?: React.ReactNode }> = ({ rol
 }
 
 const App: React.FC = () => {
+  const [hydrated, setHydrated] = useState(useAuthStore.persist.hasHydrated())
+
+  useEffect(() => {
+    if (!hydrated) {
+      const unsub = useAuthStore.persist.onFinishHydration(() => setHydrated(true))
+      return unsub
+    }
+  }, [hydrated])
+
+  if (!hydrated) {
+    return (
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Spin size="large" tip="加载中..." />
+      </div>
+    )
+  }
+
   return (
     <ConfigProvider locale={zhCN}>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+
+          {/* 根路由 - 按角色重定向 */}
+          <Route path="/" element={<RootRedirect />} />
 
           {/* 学生路由 */}
           <Route element={<RoleRoute role="student" />}>

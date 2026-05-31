@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Avatar, Typography, Tag, Row, Col, Statistic } from 'antd'
 import { UserOutlined, TrophyOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
@@ -6,8 +5,6 @@ import { dashboardApi } from '@/api/dashboard'
 import { useAuthStore } from '@/stores/auth'
 
 const { Title, Text } = Typography
-
-const mealLabels = ['', '早餐', '午餐', '晚餐', '夜宵']
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuthStore()
@@ -23,7 +20,7 @@ const ProfilePage: React.FC = () => {
         <Col span={6}>
           <Card style={{ textAlign: 'center' }}>
             <Avatar size={80} icon={<UserOutlined />} style={{ marginBottom: 16 }} />
-            <Title level={4}>{data?.maskedName || user?.name}</Title>
+            <Title level={4}>{data?.student_name || user?.name}</Title>
             <Text type="secondary">{user?.department || user?.user_id}</Text>
             <br />
             <Tag color="blue" style={{ marginTop: 8 }}>{user?.role === 'student' ? '学生用户' : user?.role}</Tag>
@@ -36,7 +33,7 @@ const ProfilePage: React.FC = () => {
               <Col span={8}>
                 <Statistic
                   title="本月消费"
-                  value={data?.monthlySpending || 0}
+                  value={data?.month_total_amount || 0}
                   prefix="¥"
                   precision={2}
                   valueStyle={{ color: '#f5222d' }}
@@ -45,13 +42,13 @@ const ProfilePage: React.FC = () => {
               <Col span={8}>
                 <Statistic
                   title="常去食堂"
-                  value={data?.favoriteCanteen || '-'}
+                  value={data?.favorite_canteen || '-'}
                 />
               </Col>
               <Col span={8}>
                 <Statistic
                   title="就餐偏好"
-                  value={mealLabels[data?.mealPreference || 1] || '午餐'}
+                  value={data?.time_preference || '午餐'}
                   suffix={<TrophyOutlined />}
                 />
               </Col>
@@ -63,8 +60,7 @@ const ProfilePage: React.FC = () => {
               <Col span={8}>
                 <Statistic
                   title="营养综合分"
-                  value={data?.nutritionScore || 0}
-                  suffix="/ 100"
+                  value={data?.nutrition_score || '暂无'}
                   valueStyle={{ color: '#52c41a' }}
                 />
               </Col>

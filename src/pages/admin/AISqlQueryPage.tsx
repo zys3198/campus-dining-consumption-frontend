@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
-import { Card, Input, Button, Table, Typography, message } from 'antd'
+import { useState } from 'react'
+import { Card, Input, Button, Table, message } from 'antd'
 import { useMutation } from '@tanstack/react-query'
 import { aiApi } from '@/api/ai'
 
 const { TextArea } = Input
-const { Title } = Typography
 
 export default function AISqlQueryPage() {
   const [question, setQuestion] = useState('')
@@ -43,7 +42,7 @@ export default function AISqlQueryPage() {
           <Table
             dataSource={mutation.data.results}
             columns={mutation.data.columns.map(col => ({ title: col, dataIndex: col, key: col }))}
-            rowKey={(_, i: number) => i.toString()}
+            rowKey={(_, i) => String(i)}
             pagination={false}
           />
           <p style={{ color: '#888', marginTop: 8 }}>

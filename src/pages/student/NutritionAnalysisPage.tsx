@@ -1,4 +1,3 @@
-import React from 'react'
 import { Row, Col, Card, Table, Tag } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { nutritionApi } from '@/api/nutrition'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Table } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { canteenApi } from '@/api/resources'
@@ -6,7 +5,7 @@ import { canteenApi } from '@/api/resources'
 export default function CanteenManagePage() {
   const { data, isLoading } = useQuery({
     queryKey: ['admin-canteens'],
-    queryFn: canteenApi.list,
+    queryFn: () => canteenApi.list(),
   })
 
   return (

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Table, Tag } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { dashboardApi } from '@/api/dashboard'

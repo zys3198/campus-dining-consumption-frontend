@@ -1,9 +1,12 @@
-import React from 'react'
 import { Card, Row, Col, Statistic, Progress, Typography, Spin } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { dashboardApi } from '@/api/dashboard'
+import type { CongestionItem } from '@/types'
 
 const { Title, Text } = Typography
+
+const levelToPercent: Record<string, number> = { '畅通': 25, '普通': 50, '拥堵': 75, '严重': 100 }
+const levelToColor: Record<string, string> = { '畅通': '#52c41a', '普通': '#faad14', '拥堵': '#f5222d', '严重': '#ff0000' }
 
 const RealtimePage: React.FC = () => {
   const { data, isLoading } = useQuery({
@@ -25,7 +28,7 @@ const RealtimePage: React.FC = () => {
           <Card style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
             <Statistic
               title={<Text style={{ color: '#fff' }}>今日营收</Text>}
-              value={data?.totalToday || 0}
+              value={data?.today_total_amount || 0}
               precision={2}
               suffix="元"
               valueStyle={{ color: '#fff', fontSize: 36 }}
@@ -36,7 +39,7 @@ const RealtimePage: React.FC = () => {
           <Card style={{ background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' }}>
             <Statistic
               title={<Text style={{ color: '#fff' }}>今日订单</Text>}
-              value={data?.totalTransactions || 0}
+              value={data?.today_total_count || 0}
               suffix="笔"
               valueStyle={{ color: '#fff', fontSize: 36 }}
             />
@@ -46,15 +49,15 @@ const RealtimePage: React.FC = () => {
 
       <Card title="窗口拥挤度">
         <Row gutter={[16, 16]}>
-          {data?.windowCongestion?.map((w) => (
+          {data?.windows?.map((w: CongestionItem) => (
             <Col span={8} key={w.window_id}>
               <Card size="small">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Text>{w.window_name}</Text>
                   <Progress
-                    percent={Math.min(100, w.congestion)}
+                    percent={levelToPercent[w.level] || 0}
                     size="small"
-                    strokeColor={w.congestion > 80 ? '#f5222d' : w.congestion > 50 ? '#faad14' : '#52c41a'}
+                    strokeColor={levelToColor[w.level] || '#52c41a'}
                   />
                 </div>
               </Card>

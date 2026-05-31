@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Row, Col, Statistic, Table, Progress } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { dashboardApi } from '@/api/dashboard'
@@ -9,15 +8,11 @@ const AdminOperationsPage: React.FC = () => {
     queryFn: dashboardApi.operations,
   })
 
-  const topDishesColumns = [
-    { title: '餐品', dataIndex: 'dish_name', key: 'dish_name' },
-    { title: '销量', dataIndex: 'count', key: 'count' },
-  ]
-
-  const canteenColumns = [
-    { title: '食堂', dataIndex: 'name', key: 'name' },
-    { title: '营收', dataIndex: 'revenue', key: 'revenue', render: (r: number) => `¥${r.toFixed(2)}` },
-    { title: '订单', dataIndex: 'transactions', key: 'transactions' },
+  const topWindowsColumns = [
+    { title: '窗口名', dataIndex: 'window_name', key: 'window_name' },
+    { title: '食堂', dataIndex: 'canteen_name', key: 'canteen_name' },
+    { title: '销售额', dataIndex: 'total_amount', key: 'total_amount', render: (v: number) => `¥${v.toFixed(2)}` },
+    { title: '订单数', dataIndex: 'transaction_count', key: 'transaction_count' },
   ]
 
   return (
@@ -25,22 +20,22 @@ const AdminOperationsPage: React.FC = () => {
       <Row gutter={16} style={{ marginBottom: 24 }}>
         <Col span={6}>
           <Card>
-            <Statistic title="今日营收" value={data?.todayRevenue || 0} prefix="¥" precision={2} loading={isLoading} />
+            <Statistic title="今日营收" value={data?.today.total_amount || 0} prefix="¥" precision={2} loading={isLoading} />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic title="今日订单" value={data?.todayTransactions || 0} suffix="笔" loading={isLoading} />
+            <Statistic title="今日订单" value={data?.today.total_count || 0} suffix="笔" loading={isLoading} />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic title="营业窗口" value={data?.activeWindows || 0} suffix="个" loading={isLoading} />
+            <Statistic title="就餐人数" value={data?.today.student_count || 0} suffix="人" loading={isLoading} />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic title="客单价" value={data?.avgTransactionAmount || 0} prefix="¥" precision={2} loading={isLoading} />
+            <Statistic title="人均消费" value={data?.today.avg_per_person || 0} prefix="¥" precision={2} loading={isLoading} />
           </Card>
         </Col>
       </Row>
@@ -48,24 +43,20 @@ const AdminOperationsPage: React.FC = () => {
       <Row gutter={16}>
         <Col span={12}>
           <Card title="餐次分布" style={{ marginBottom: 16 }}>
-            {data?.mealTypeBreakdown && Object.entries(data.mealTypeBreakdown).map(([meal, count]) => (
-              <div key={meal} style={{ marginBottom: 8 }}>
-                <span>{['', '早餐', '午餐', '晚餐', '夜宵'][parseInt(meal)] || meal}</span>
-                <Progress percent={Math.round((count / (data.todayTransactions || 1)) * 100)} size="small" />
+            {data?.meal_breakdown?.map((m) => (
+              <div key={m.meal_type} style={{ marginBottom: 8 }}>
+                <span>{m.meal_name}</span>
+                <Progress percent={m.percentage} size="small" />
               </div>
-            ))}
+            )) || <span>暂无数据</span>}
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="热销餐品" style={{ marginBottom: 16 }}>
-            <Table size="small" columns={topDishesColumns} dataSource={data?.topDishes} rowKey="dish_id" pagination={false} loading={isLoading} />
+          <Card title="热销窗口" style={{ marginBottom: 16 }}>
+            <Table size="small" columns={topWindowsColumns} dataSource={data?.top_windows} rowKey="window_id" pagination={false} loading={isLoading} />
           </Card>
         </Col>
       </Row>
-
-      <Card title="各食堂经营情况">
-        <Table size="small" columns={canteenColumns} dataSource={data?.canteenStats} rowKey="canteen_id" pagination={false} loading={isLoading} />
-      </Card>
     </Card>
   )
 }

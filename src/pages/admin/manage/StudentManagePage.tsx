@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Table } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { studentApi } from '@/api/resources'
@@ -6,7 +5,7 @@ import { studentApi } from '@/api/resources'
 export default function StudentManagePage() {
   const { data, isLoading } = useQuery({
     queryKey: ['admin-students'],
-    queryFn: studentApi.list,
+    queryFn: () => studentApi.list(),
   })
 
   return (

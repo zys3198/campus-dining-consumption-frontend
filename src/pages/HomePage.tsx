@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, Row, Col, Statistic, Spin, Typography, Badge } from 'antd'
 import { ShopOutlined, AppleOutlined, DollarOutlined, TeamOutlined } from '@ant-design/icons'
@@ -34,7 +34,7 @@ const HomePage: React.FC = () => {
           <Card>
             <Statistic
               title="今日营收"
-              value={realtime?.totalToday || 0}
+              value={realtime?.today_total_amount || 0}
               prefix={<DollarOutlined />}
               precision={2}
               suffix="元"
@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
           <Card>
             <Statistic
               title="今日订单"
-              value={realtime?.totalTransactions || 0}
+              value={realtime?.today_total_count || 0}
               prefix={<TeamOutlined />}
               suffix="笔"
             />
@@ -55,7 +55,7 @@ const HomePage: React.FC = () => {
           <Card>
             <Statistic
               title="营业窗口"
-              value={realtime?.windowCongestion?.length || 0}
+              value={realtime?.windows?.length || 0}
               prefix={<ShopOutlined />}
               suffix="个"
             />

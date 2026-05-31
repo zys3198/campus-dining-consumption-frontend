@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Table, Tag } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { dishApi } from '@/api/resources'
@@ -6,7 +5,7 @@ import { dishApi } from '@/api/resources'
 export default function DishManagePage() {
   const { data, isLoading } = useQuery({
     queryKey: ['admin-dishes'],
-    queryFn: dishApi.list,
+    queryFn: () => dishApi.list(),
   })
 
   return (

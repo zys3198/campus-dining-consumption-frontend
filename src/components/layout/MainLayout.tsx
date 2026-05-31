@@ -13,6 +13,7 @@ import {
   DatabaseOutlined,
 } from '@ant-design/icons'
 import { useAuthStore } from '@/stores/auth'
+import { ErrorBoundary } from '@/components/common/ErrorBoundary'
 
 const { Header, Content, Sider } = Layout
 
@@ -91,7 +92,9 @@ export const MainLayout: React.FC = () => {
           </Dropdown>
         </Header>
         <Content style={{ padding: '24px', background: '#f0f2f5', minHeight: 'calc(100vh - 64px)' }}>
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </Content>
       </Layout>
     </Layout>

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Card, Table, Tag } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { windowApi } from '@/api/resources'
@@ -6,7 +5,7 @@ import { windowApi } from '@/api/resources'
 export default function WindowManagePage() {
   const { data, isLoading } = useQuery({
     queryKey: ['admin-windows'],
-    queryFn: windowApi.list,
+    queryFn: () => windowApi.list(),
   })
 
   return (
