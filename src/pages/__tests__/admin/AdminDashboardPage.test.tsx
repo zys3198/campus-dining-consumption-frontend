@@ -17,4 +17,12 @@ describe('AdminDashboardPage', () => {
     expect(screen.getByText('平均热量')).toBeInTheDocument()
     expect(screen.getByText('营养预警')).toBeInTheDocument()
   })
+
+  it('should display all stat cards for admin overview', async () => {
+    renderPage()
+    await screen.findByText('今日销售额')
+    expect(screen.getByText('今日订单')).toBeInTheDocument()
+    expect(screen.getByText('平均热量')).toBeInTheDocument()
+    expect(screen.getByText('营养预警')).toBeInTheDocument()
+  })
 })

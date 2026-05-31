@@ -14,4 +14,12 @@ describe('DishManagePage', () => {
     renderPage()
     await waitFor(() => { expect(screen.getByText('餐品管理')).toBeInTheDocument() })
   })
+
+  it('should display dish price in table', async () => {
+    renderPage()
+    await screen.findByText('餐品管理')
+    await waitFor(() => {
+      expect(screen.getByText(/15/)).toBeTruthy()
+    })
+  })
 })

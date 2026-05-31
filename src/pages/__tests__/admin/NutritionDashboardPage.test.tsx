@@ -28,4 +28,10 @@ describe('NutritionDashboardPage', () => {
     expect(screen.getByText('按院系')).toBeInTheDocument()
     expect(screen.getByText('按年级')).toBeInTheDocument()
   })
+
+  it('should display alert count card', async () => {
+    renderPage()
+    await screen.findByText('预警人数')
+    await screen.findByText('3')
+  })
 })

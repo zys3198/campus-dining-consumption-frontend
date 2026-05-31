@@ -20,4 +20,16 @@ describe('AISqlQueryPage', () => {
     expect(screen.getByPlaceholderText(/自然语言/)).toBeInTheDocument()
     expect(screen.getByText('自然语言查询')).toBeInTheDocument()
   })
+
+  it('should have an input area for SQL questions', async () => {
+    renderPage()
+    const textarea = document.querySelector('textarea') || screen.getByRole('textbox')
+    expect(textarea).toBeTruthy()
+  })
+
+  it('should have a submit/query button', async () => {
+    renderPage()
+    const buttons = screen.getAllByRole('button')
+    expect(buttons.length).toBeGreaterThanOrEqual(1)
+  })
 })

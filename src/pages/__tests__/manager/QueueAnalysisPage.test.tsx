@@ -10,10 +10,17 @@ function renderPage() {
 }
 
 describe('QueueAnalysisPage', () => {
-  it('should render page without crashing', async () => {
+  it('should render queue analysis page', async () => {
     renderPage()
     await waitFor(() => {
       expect(screen.getByText('窗口排队分析')).toBeInTheDocument()
+    })
+  })
+
+  it('should display wait time statistics', async () => {
+    renderPage()
+    await waitFor(() => {
+      expect(screen.getByText('平均等待(s)')).toBeInTheDocument()
     })
   })
 })

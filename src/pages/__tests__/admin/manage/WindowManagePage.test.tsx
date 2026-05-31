@@ -14,4 +14,12 @@ describe('WindowManagePage', () => {
     renderPage()
     await waitFor(() => { expect(screen.getByText('窗口管理')).toBeInTheDocument() })
   })
+
+  it('should display window data in table', async () => {
+    renderPage()
+    await screen.findByText('窗口管理')
+    await waitFor(() => {
+      expect(screen.getByText(/川菜/)).toBeTruthy()
+    })
+  })
 })

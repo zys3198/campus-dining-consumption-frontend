@@ -14,4 +14,17 @@ describe('StudentManagePage', () => {
     renderPage()
     await waitFor(() => { expect(screen.getByText('张三')).toBeInTheDocument() })
   })
+
+  it('should display student department info', async () => {
+    renderPage()
+    await screen.findByText('张三')
+    expect(screen.getByText(/计算机学院/)).toBeTruthy()
+  })
+
+  it('should show table column headers', async () => {
+    renderPage()
+    await screen.findByText('张三')
+    const tableHeaders = document.querySelectorAll('th')
+    expect(tableHeaders.length).toBeGreaterThanOrEqual(1)
+  })
 })
