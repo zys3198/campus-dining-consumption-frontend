@@ -1,12 +1,22 @@
+import { useState } from 'react'
 import { Card, Table, Tag } from 'antd'
+import type { TablePaginationConfig } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { windowApi } from '@/api/resources'
 
 export default function WindowManagePage() {
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
+
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-windows'],
-    queryFn: () => windowApi.list(),
+    queryKey: ['admin-windows', page, pageSize],
+    queryFn: () => windowApi.list({ page, page_size: pageSize }),
   })
+
+  const handleTableChange = (pagination: TablePaginationConfig) => {
+    if (pagination.current) setPage(pagination.current)
+    if (pagination.pageSize) setPageSize(pagination.pageSize)
+  }
 
   return (
     <Card title="窗口管理">
@@ -21,6 +31,14 @@ export default function WindowManagePage() {
         ]}
         rowKey="window_id"
         loading={isLoading}
+        pagination={{
+          current: page,
+          pageSize,
+          total: data?.meta?.total ?? 0,
+          showSizeChanger: true,
+          showTotal: (total) => `共 ${total} 个窗口`,
+        }}
+        onChange={handleTableChange}
       />
     </Card>
   )

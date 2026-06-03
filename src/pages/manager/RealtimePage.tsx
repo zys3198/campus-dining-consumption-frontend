@@ -12,7 +12,7 @@ export default function RealtimePage() {
     refetchInterval: 30000,
   })
 
-  const { data: sseData } = useRealtimeSSE('/api/dashboards/realtime/stream', true)
+  const { data: sseData } = useRealtimeSSE('/api/v1/dashboards/realtime/stream', true)
 
   const display = sseData || staticData
 

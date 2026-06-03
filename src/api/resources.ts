@@ -12,7 +12,7 @@ import type {
 
 export const canteenApi = {
   list: async (): Promise<CanteenListResponse[]> => {
-    const res = await apiClient.get<APIResponse<CanteenListResponse[]>>('/canteens')
+    const res = await apiClient.get<APIResponse<CanteenListResponse[]>>('/canteens/')
     return res.data.data
   },
 
@@ -24,7 +24,7 @@ export const canteenApi = {
 
 export const windowApi = {
   list: async (params?: { canteen_id?: string; status?: number } & PaginationParams): Promise<{ data: WindowResponse[]; meta: any }> => {
-    const res = await apiClient.get<APIResponse<WindowResponse[]>>('/windows', { params })
+    const res = await apiClient.get<APIResponse<WindowResponse[]>>('/windows/', { params })
     return { data: res.data.data, meta: res.data.meta }
   },
 
@@ -34,7 +34,7 @@ export const windowApi = {
   },
 
   create: async (data: Partial<WindowResponse>): Promise<WindowResponse> => {
-    const res = await apiClient.post<APIResponse<WindowResponse>>('/windows', data)
+    const res = await apiClient.post<APIResponse<WindowResponse>>('/windows/', data)
     return res.data.data
   },
 
@@ -56,7 +56,7 @@ export const dishApi = {
     is_available?: number
     keyword?: string
   } & PaginationParams): Promise<{ data: DishResponse[]; meta: any }> => {
-    const res = await apiClient.get<APIResponse<DishResponse[]>>('/dishes', { params })
+    const res = await apiClient.get<APIResponse<DishResponse[]>>('/dishes/', { params })
     return { data: res.data.data, meta: res.data.meta }
   },
 
@@ -66,7 +66,7 @@ export const dishApi = {
   },
 
   create: async (data: DishCreate): Promise<DishResponse> => {
-    const res = await apiClient.post<APIResponse<DishResponse>>('/dishes', data)
+    const res = await apiClient.post<APIResponse<DishResponse>>('/dishes/', data)
     return res.data.data
   },
 
@@ -82,7 +82,7 @@ export const dishApi = {
 
 export const studentApi = {
   list: async (params?: PaginationParams): Promise<{ data: StudentRecord[]; meta: any }> => {
-    const res = await apiClient.get<APIResponse<StudentRecord[]>>('/students', { params })
+    const res = await apiClient.get<APIResponse<StudentRecord[]>>('/students/', { params })
     return { data: res.data.data, meta: res.data.meta }
   },
 }

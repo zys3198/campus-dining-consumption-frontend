@@ -18,7 +18,7 @@ export const transactionApi = {
     page?: number
     page_size?: number
   }): Promise<{ data: TransactionResponse[]; meta: any }> => {
-    const res = await apiClient.get<any>('/transactions', { params })
+    const res = await apiClient.get<any>('/transactions/', { params })
     return { data: res.data.data, meta: res.data.meta }
   },
 

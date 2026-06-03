@@ -14,7 +14,7 @@ const mockData: RealtimeDashboard = {
 }
 
 // Mock SSE hook at module level (hoisted)
-let mockSSE = { data: null, error: null }
+let mockSSE: { data: RealtimeDashboard | null; error: string | null } = { data: null, error: null }
 vi.mock('@/hooks/useRealtimeSSE', () => ({
   useRealtimeSSE: () => mockSSE,
 }))

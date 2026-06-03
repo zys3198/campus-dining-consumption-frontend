@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { ConfigProvider, Spin } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import MainLayout from './components/layout/MainLayout'
@@ -38,11 +38,11 @@ const RootRedirect: React.FC = () => {
   return <Navigate to={roleRoutes[user.role] || '/login'} replace />
 }
 
-const RoleRoute: React.FC<{ role: string; children?: React.ReactNode }> = ({ role, children }) => {
+const RoleRoute: React.FC<{ role: string }> = ({ role }) => {
   const { token, user } = useAuthStore()
   if (!token) return <Navigate to="/login" replace />
   if (user?.role !== role) return <Navigate to="/" replace />
-  return <>{children}</>
+  return <Outlet />
 }
 
 const App: React.FC = () => {
