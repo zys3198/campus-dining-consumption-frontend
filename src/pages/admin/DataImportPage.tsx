@@ -68,7 +68,7 @@ const CSV_COLUMNS: Record<string, { columns: string[]; example: string }> = {
 }
 
 function ImportPanel({
-  title,
+  title: _title,
   description,
   dataType,
   importFn,
