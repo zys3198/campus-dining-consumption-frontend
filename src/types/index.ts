@@ -275,3 +275,11 @@ export interface GroupNutritionReport {
   group_by: 'department' | 'grade'
   groups: GroupNutritionStats[]
 }
+
+// Data import types
+export interface ImportResponse {
+  imported: number
+  skipped?: number
+  error_count: number
+  error_details?: string[]
+}

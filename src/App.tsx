@@ -24,6 +24,7 @@ import CanteenManagePage from './pages/admin/manage/CanteenManagePage'
 import WindowManagePage from './pages/admin/manage/WindowManagePage'
 import DishManagePage from './pages/admin/manage/DishManagePage'
 import StudentManagePage from './pages/admin/manage/StudentManagePage'
+import DataImportPage from './pages/admin/DataImportPage'
 
 import { useAuthStore } from './stores/auth'
 
@@ -103,6 +104,7 @@ const App: React.FC = () => {
               <Route path="/admin/windows" element={<WindowManagePage />} />
               <Route path="/admin/dishes" element={<DishManagePage />} />
               <Route path="/admin/students" element={<StudentManagePage />} />
+              <Route path="/admin/data-import" element={<DataImportPage />} />
             </Route>
           </Route>
 

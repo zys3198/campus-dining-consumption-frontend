@@ -8,6 +8,7 @@ import type {
   DishUpdate,
   PaginationParams,
   StudentRecord,
+  ImportResponse,
 } from '@/types'
 
 export const canteenApi = {
@@ -84,5 +85,37 @@ export const studentApi = {
   list: async (params?: PaginationParams): Promise<{ data: StudentRecord[]; meta: any }> => {
     const res = await apiClient.get<APIResponse<StudentRecord[]>>('/students/', { params })
     return { data: res.data.data, meta: res.data.meta }
+  },
+}
+
+export const importApi = {
+  transactions: async (file: File): Promise<ImportResponse> => {
+    const form = new FormData()
+    form.append('file', file)
+    const res = await apiClient.post<APIResponse<ImportResponse>>('/transactions/batch', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 120_000,
+    })
+    return res.data.data
+  },
+
+  students: async (file: File): Promise<ImportResponse> => {
+    const form = new FormData()
+    form.append('file', file)
+    const res = await apiClient.post<APIResponse<ImportResponse>>('/students/import', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 120_000,
+    })
+    return res.data.data
+  },
+
+  queueRecords: async (file: File): Promise<ImportResponse> => {
+    const form = new FormData()
+    form.append('file', file)
+    const res = await apiClient.post<APIResponse<ImportResponse>>('/queue/import', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 120_000,
+    })
+    return res.data.data
   },
 }

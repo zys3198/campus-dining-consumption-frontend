@@ -11,6 +11,7 @@ import {
   LineChartOutlined,
   TeamOutlined,
   DatabaseOutlined,
+  ImportOutlined,
 } from '@ant-design/icons'
 import { useAuthStore } from '@/stores/auth'
 import { ErrorBoundary } from '@/components/common/ErrorBoundary'
@@ -44,6 +45,7 @@ export const MainLayout: React.FC = () => {
       { key: '/admin/windows', icon: <TeamOutlined />, label: '窗口管理' },
       { key: '/admin/dishes', icon: <TeamOutlined />, label: '餐品管理' },
       { key: '/admin/students', icon: <TeamOutlined />, label: '学生管理' },
+      { key: '/admin/data-import', icon: <ImportOutlined />, label: '数据导入' },
     ],
   }
 

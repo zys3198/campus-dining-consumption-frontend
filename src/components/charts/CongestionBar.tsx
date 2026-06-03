@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Progress } from 'antd'
+import { Empty, List, Progress } from 'antd'
 import type { CongestionItem } from '@/types'
 
 interface CongestionBarProps {
@@ -9,6 +9,9 @@ interface CongestionBarProps {
 const levelColor: Record<string, string> = { '畅通': '#52c41a', '普通': '#1890ff', '拥堵': '#fa8c16', '严重': '#cf1322' }
 
 export const CongestionBar: React.FC<CongestionBarProps> = ({ data }) => {
+  if (!data.length) {
+    return <Empty description="暂无拥堵数据" style={{ padding: 48 }} />
+  }
   return (
     <List
       dataSource={data}

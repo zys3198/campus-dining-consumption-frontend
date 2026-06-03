@@ -1,4 +1,5 @@
 import React from 'react'
+import { Empty } from 'antd'
 import ReactECharts from 'echarts-for-react'
 import type { MealTypeBreakdown } from '@/types'
 
@@ -7,6 +8,9 @@ interface MealBreakdownPieProps {
 }
 
 export const MealBreakdownPie: React.FC<MealBreakdownPieProps> = ({ data }) => {
+  if (!data.length) {
+    return <Empty description="暂无餐段数据" style={{ padding: 48 }} />
+  }
   const option = {
     tooltip: { trigger: 'item', formatter: '{b}: ¥{c} ({d}%)' },
     legend: { bottom: 0 },
