@@ -153,26 +153,27 @@ function ImportPanel({
         <Space direction="vertical" size={4}>
           <Text>
             支持格式：
-            <Tag icon={<FileExcelOutlined />} color="green">.xlsx</Tag>
-            <Tag icon={<FileTextOutlined />} color="blue">.csv</Tag>
-            <Tag icon={<FileTextOutlined />} color="orange">.json</Tag>
-            <Tag icon={<FileTextOutlined />} color="orange">.jsonl</Tag>
+            <Tag icon={<FileExcelOutlined />} color="#10B981">.xlsx</Tag>
+            <Tag icon={<FileTextOutlined />} color="#0D9488">.csv</Tag>
+            <Tag icon={<FileTextOutlined />} color="#F59E0B">.json</Tag>
+            <Tag icon={<FileTextOutlined />} color="#F59E0B">.jsonl</Tag>
           </Text>
           <Text>
             必填列：
             {spec.columns.map((col) => (
-              <Tag key={col}>{col}</Tag>
+              <Tag key={col} style={{ borderRadius: 4 }}>{col}</Tag>
             ))}
           </Text>
           <details style={{ marginTop: 4 }}>
-            <summary style={{ cursor: 'pointer', color: '#1677ff' }}>查看示例</summary>
+            <summary style={{ cursor: 'pointer', color: '#0D9488' }}>查看示例</summary>
             <pre style={{
-              background: '#f5f5f5',
+              background: '#F8FAFC',
               padding: 12,
-              borderRadius: 6,
+              borderRadius: 8,
               fontSize: 12,
               marginTop: 8,
               overflowX: 'auto',
+              border: '1px solid #E2E8F0',
             }}>
               {spec.example}
             </pre>

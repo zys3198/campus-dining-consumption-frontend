@@ -12,14 +12,31 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, suffix, prefix, trend, precision = 0 }) => {
   return (
-    <Card>
+    <Card
+      style={{
+        border: 'none',
+        borderRadius: 12,
+        overflow: 'hidden',
+      }}
+      styles={{
+        body: { padding: '20px 24px' },
+      }}
+    >
       <Statistic
         title={title}
         value={value}
         precision={precision}
         suffix={suffix}
         prefix={prefix}
-        valueStyle={{ color: trend && trend < 0 ? '#cf1322' : undefined }}
+        valueStyle={{
+          color: trend && trend < 0 ? '#EF4444' : '#0D9488',
+          fontWeight: 600,
+        }}
+        prefixStyle={{
+          color: '#64748B',
+          fontSize: 13,
+          fontWeight: 500,
+        }}
       />
     </Card>
   )

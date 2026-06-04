@@ -1,17 +1,64 @@
 import { useState } from 'react'
-import { Card, Table } from 'antd'
+import { Card, Table, Button, Modal, Form, Input, App } from 'antd'
+import { EditOutlined } from '@ant-design/icons'
 import type { TablePaginationConfig } from 'antd'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { studentApi } from '@/api/resources'
+import type { StudentRecord, StudentUpdate } from '@/types'
+
+interface FormValues {
+  name: string
+  department: string
+  grade: string
+}
 
 export default function StudentManagePage() {
+  const queryClient = useQueryClient()
+  const { message } = App.useApp()
+
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editing, setEditing] = useState<StudentRecord | null>(null)
+  const [form] = Form.useForm<FormValues>()
 
   const { data, isLoading } = useQuery({
     queryKey: ['admin-students', page, pageSize],
     queryFn: () => studentApi.list({ page, page_size: pageSize }),
   })
+
+  const updateMut = useMutation({
+    mutationFn: ({ id, values }: { id: string; values: StudentUpdate }) => studentApi.update(id, values),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-students'] })
+      message.success('更新成功')
+      closeModal()
+    },
+    onError: () => message.error('更新失败'),
+  })
+
+  const openEdit = (record: StudentRecord) => {
+    setEditing(record)
+    form.setFieldsValue({
+      name: record.name,
+      department: record.department,
+      grade: record.grade,
+    })
+    setModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalOpen(false)
+    setEditing(null)
+    form.resetFields()
+  }
+
+  const handleSubmit = async () => {
+    const values = await form.validateFields()
+    if (editing) {
+      updateMut.mutate({ id: editing.student_id, values })
+    }
+  }
 
   const handleTableChange = (pagination: TablePaginationConfig) => {
     if (pagination.current) setPage(pagination.current)
@@ -27,6 +74,13 @@ export default function StudentManagePage() {
           { title: '姓名', dataIndex: 'name', key: 'name' },
           { title: '院系', dataIndex: 'department', key: 'department' },
           { title: '年级', dataIndex: 'grade', key: 'grade' },
+          {
+            title: '操作',
+            key: 'action',
+            render: (_, record) => (
+              <Button type="link" icon={<EditOutlined />} onClick={() => openEdit(record)}>编辑</Button>
+            ),
+          },
         ]}
         rowKey="student_id"
         loading={isLoading}
@@ -39,6 +93,30 @@ export default function StudentManagePage() {
         }}
         onChange={handleTableChange}
       />
+
+      <Modal
+        title="编辑学生信息"
+        open={modalOpen}
+        onOk={handleSubmit}
+        onCancel={closeModal}
+        confirmLoading={updateMut.isPending}
+        destroyOnClose
+      >
+        <Form form={form} layout="vertical" autoComplete="off">
+          <Form.Item label="学号">
+            <Input value={editing?.student_id} disabled />
+          </Form.Item>
+          <Form.Item name="name" label="姓名" rules={[{ required: true, message: '请输入姓名' }]}>
+            <Input placeholder="请输入姓名" />
+          </Form.Item>
+          <Form.Item name="department" label="院系" rules={[{ required: true, message: '请输入院系' }]}>
+            <Input placeholder="请输入院系" />
+          </Form.Item>
+          <Form.Item name="grade" label="年级" rules={[{ required: true, message: '请输入年级' }]}>
+            <Input placeholder="请输入年级" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Card>
   )
 }

@@ -1,22 +1,41 @@
 import { useState } from 'react'
-import { Row, Col, Table, Tag, Tabs } from 'antd'
+import { Row, Col, Table, Tag, Tabs, DatePicker } from 'antd'
 import { useQuery } from '@tanstack/react-query'
+import dayjs, { type Dayjs } from 'dayjs'
 import { dashboardApi } from '@/api/dashboard'
 import { nutritionApi } from '@/api/nutrition'
 import { StatCard } from '@/components/common/StatCard'
 
 export default function NutritionDashboardPage() {
+  const [date, setDate] = useState<Dayjs>(dayjs())
   const [groupBy, setGroupBy] = useState<'department' | 'grade'>('department')
+  const dateStr = date.format('YYYY-MM-DD')
 
-  const nutQuery = useQuery({ queryKey: ['admin-nutrition'], queryFn: dashboardApi.nutrition })
-  const groupQuery = useQuery({
-    queryKey: ['nutrition-group', groupBy],
-    queryFn: () => nutritionApi.getGroup({ group_by: groupBy }),
+  const nutQuery = useQuery({
+    queryKey: ['admin-nutrition', dateStr],
+    queryFn: () => dashboardApi.nutrition({ date: dateStr }),
   })
-  const alertsQuery = useQuery({ queryKey: ['nutrition-alerts'], queryFn: () => nutritionApi.getAlerts() })
+  const groupQuery = useQuery({
+    queryKey: ['nutrition-group', groupBy, dateStr],
+    queryFn: () => nutritionApi.getGroup({ group_by: groupBy, start_date: dateStr, end_date: dateStr }),
+  })
+  const alertsQuery = useQuery({
+    queryKey: ['nutrition-alerts', dateStr],
+    queryFn: () => nutritionApi.getAlerts({ date: dateStr }),
+  })
 
   return (
     <div>
+      <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+        <span style={{ color: '#64748B', fontSize: 14 }}>选择日期：</span>
+        <DatePicker
+          value={date}
+          onChange={(d) => d && setDate(d)}
+          allowClear={false}
+          maxDate={dayjs()}
+          style={{ width: 180 }}
+        />
+      </div>
       <Row gutter={16}>
         <Col span={6}><StatCard title="平均热量" value={nutQuery.data?.avg_energy_kcal ?? 0} suffix="kcal" precision={1} /></Col>
         <Col span={6}><StatCard title="平均蛋白质" value={nutQuery.data?.avg_protein_g ?? 0} suffix="g" precision={1} /></Col>

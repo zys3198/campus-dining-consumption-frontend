@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
-import { ConfigProvider, Spin } from 'antd'
+import { ConfigProvider, Spin, theme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import MainLayout from './components/layout/MainLayout'
 import LoginPage from './pages/LoginPage'
@@ -65,7 +65,58 @@ const App: React.FC = () => {
   }
 
   return (
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider
+      locale={zhCN}
+      theme={{
+        token: {
+          colorPrimary: '#0D9488',
+          colorSuccess: '#10B981',
+          colorWarning: '#F59E0B',
+          colorError: '#EF4444',
+          colorInfo: '#6366F1',
+          borderRadius: 10,
+          colorBgContainer: '#FFFFFF',
+          colorBgLayout: '#F1F5F9',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+          fontSize: 14,
+          colorText: '#1E293B',
+          colorTextSecondary: '#64748B',
+        },
+        components: {
+          Card: {
+            borderRadiusLG: 12,
+            paddingLG: 20,
+          },
+          Table: {
+            borderRadiusLG: 12,
+            headerBg: '#F8FAFC',
+            headerColor: '#1E293B',
+            rowHoverBg: '#F0FDFA',
+          },
+          Menu: {
+            darkItemBg: 'transparent',
+            darkItemSelectedBg: 'rgba(13, 148, 136, 0.18)',
+            darkItemHoverBg: 'rgba(255, 255, 255, 0.06)',
+            darkItemColor: '#94A3B8',
+            darkItemSelectedColor: '#5EEAD4',
+            darkItemHoverColor: '#E2E8F0',
+          },
+          Button: {
+            borderRadius: 8,
+            controlHeight: 40,
+          },
+          Tabs: {
+            inkBarColor: '#0D9488',
+            itemActiveColor: '#0D9488',
+            itemSelectedColor: '#0D9488',
+          },
+          Progress: {
+            remainingColor: '#F1F5F9',
+          },
+        },
+        algorithm: theme.defaultAlgorithm,
+      }}
+    >
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />

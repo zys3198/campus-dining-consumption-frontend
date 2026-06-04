@@ -1,5 +1,7 @@
-import { Row, Col, Card, Tabs, Table } from 'antd'
+import { useState } from 'react'
+import { Row, Col, Card, Tabs, Table, DatePicker } from 'antd'
 import { useQuery } from '@tanstack/react-query'
+import dayjs, { type Dayjs } from 'dayjs'
 import { dashboardApi } from '@/api/dashboard'
 import { StatCard } from '@/components/common/StatCard'
 import { TrendLineChart } from '@/components/charts/TrendLineChart'
@@ -7,9 +9,12 @@ import { MealBreakdownPie } from '@/components/charts/MealBreakdownPie'
 import { CongestionBar } from '@/components/charts/CongestionBar'
 
 export default function OperationsDashboardPage() {
+  const [date, setDate] = useState<Dayjs>(dayjs())
+  const dateStr = date.format('YYYY-MM-DD')
+
   const { data, isLoading } = useQuery({
-    queryKey: ['operations-dashboard'],
-    queryFn: dashboardApi.operations,
+    queryKey: ['operations-dashboard', dateStr],
+    queryFn: () => dashboardApi.operations({ date: dateStr }),
   })
 
   const tabItems = [
@@ -61,6 +66,16 @@ export default function OperationsDashboardPage() {
 
   return (
     <div>
+      <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+        <span style={{ color: '#64748B', fontSize: 14 }}>选择日期：</span>
+        <DatePicker
+          value={date}
+          onChange={(d) => d && setDate(d)}
+          allowClear={false}
+          maxDate={dayjs()}
+          style={{ width: 180 }}
+        />
+      </div>
       <Tabs items={tabItems} />
     </div>
   )

@@ -2,18 +2,36 @@ import apiClient from './client'
 import type {
   APIResponse,
   CanteenListResponse,
+  CanteenCreate,
+  CanteenUpdate,
   WindowResponse,
   DishResponse,
   DishCreate,
   DishUpdate,
   PaginationParams,
   StudentRecord,
+  StudentUpdate,
   ImportResponse,
 } from '@/types'
 
 export const canteenApi = {
   list: async (): Promise<CanteenListResponse[]> => {
     const res = await apiClient.get<APIResponse<CanteenListResponse[]>>('/canteens/')
+    return res.data.data
+  },
+
+  get: async (canteenId: string): Promise<CanteenListResponse> => {
+    const res = await apiClient.get<APIResponse<CanteenListResponse>>(`/canteens/${canteenId}`)
+    return res.data.data
+  },
+
+  create: async (data: CanteenCreate): Promise<CanteenListResponse> => {
+    const res = await apiClient.post<APIResponse<CanteenListResponse>>('/canteens/', data)
+    return res.data.data
+  },
+
+  update: async (canteenId: string, data: CanteenUpdate): Promise<CanteenListResponse> => {
+    const res = await apiClient.put<APIResponse<CanteenListResponse>>(`/canteens/${canteenId}`, data)
     return res.data.data
   },
 
@@ -85,6 +103,11 @@ export const studentApi = {
   list: async (params?: PaginationParams): Promise<{ data: StudentRecord[]; meta: any }> => {
     const res = await apiClient.get<APIResponse<StudentRecord[]>>('/students/', { params })
     return { data: res.data.data, meta: res.data.meta }
+  },
+
+  update: async (studentId: string, data: StudentUpdate): Promise<StudentRecord> => {
+    const res = await apiClient.put<APIResponse<StudentRecord>>(`/students/${studentId}`, data)
+    return res.data.data
   },
 }
 

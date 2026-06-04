@@ -12,7 +12,7 @@ export default function StudentDashboardPage() {
   return (
     <div>
       <Row gutter={16}>
-        <Col span={6}><StatCard title="本月消费" value={data?.month_total_amount ?? 0} suffix="元" precision={2} /></Col>
+        <Col span={6}><StatCard title="近30天消费" value={data?.month_total_amount ?? 0} suffix="元" precision={2} /></Col>
         <Col span={6}><StatCard title="消费次数" value={data?.month_consumption_count ?? 0} suffix="次" /></Col>
         <Col span={6}><StatCard title="次均消费" value={data?.month_avg_amount ?? 0} suffix="元" precision={2} /></Col>
         <Col span={6}><StatCard title="营养评分" value={data?.nutrition_score || '暂无'} /></Col>
@@ -28,8 +28,8 @@ export default function StudentDashboardPage() {
         </Col>
         <Col span={12}>
           <Card title="消费趋势">
-            <p style={{ color: '#888', fontSize: 14 }}>近30天消费总额</p>
-            <p style={{ fontSize: 24, fontWeight: 'bold', color: '#1890ff' }}>¥{data?.month_total_amount?.toFixed(2) ?? '0.00'}</p>
+            <p style={{ color: '#64748B', fontSize: 14 }}>消费总额</p>
+            <p style={{ fontSize: 28, fontWeight: 700, color: '#0D9488' }}>¥{data?.month_total_amount?.toFixed(2) ?? '0.00'}</p>
           </Card>
         </Col>
       </Row>

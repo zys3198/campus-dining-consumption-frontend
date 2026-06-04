@@ -34,7 +34,15 @@ export default function AISqlQueryPage() {
       </Card>
       {sql && (
         <Card title="生成的SQL" style={{ marginTop: 16 }}>
-          <pre style={{ background: '#f5f5f5', padding: 16, borderRadius: 4, overflow: 'auto' }}>{sql}</pre>
+          <pre style={{
+            background: '#F8FAFC',
+            padding: 16,
+            borderRadius: 8,
+            overflow: 'auto',
+            border: '1px solid #E2E8F0',
+            color: '#1E293B',
+            fontSize: 13,
+          }}>{sql}</pre>
         </Card>
       )}
       {mutation.data?.results && (
@@ -45,8 +53,8 @@ export default function AISqlQueryPage() {
             rowKey={(_, i) => String(i)}
             pagination={false}
           />
-          <p style={{ color: '#888', marginTop: 8 }}>
-            共 {mutation.data.row_count} 行 / 执行耗时 {mutation.data.execution_time_ms}ms
+          <p style={{ color: '#94A3B8', marginTop: 8, fontSize: 13 }}>
+            共 {mutation.data.row_count} 行 · 执行耗时 {mutation.data.execution_time_ms}ms
           </p>
         </Card>
       )}

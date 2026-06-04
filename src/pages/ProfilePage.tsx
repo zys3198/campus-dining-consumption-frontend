@@ -19,11 +19,11 @@ const ProfilePage: React.FC = () => {
       <Row gutter={24}>
         <Col span={6}>
           <Card style={{ textAlign: 'center' }}>
-            <Avatar size={80} icon={<UserOutlined />} style={{ marginBottom: 16 }} />
-            <Title level={4}>{data?.student_name || user?.name}</Title>
+            <Avatar size={80} icon={<UserOutlined />} style={{ marginBottom: 16, backgroundColor: '#0D9488', boxShadow: '0 0 0 3px rgba(13,148,136,0.15)' }} />
+            <Title level={4} style={{ marginBottom: 4 }}>{data?.student_name || user?.name}</Title>
             <Text type="secondary">{user?.department || user?.user_id}</Text>
             <br />
-            <Tag color="blue" style={{ marginTop: 8 }}>{user?.role === 'student' ? '学生用户' : user?.role}</Tag>
+            <Tag color="#0D9488" style={{ marginTop: 8, borderRadius: 6 }}>{user?.role === 'student' ? '学生用户' : user?.role}</Tag>
           </Card>
         </Col>
 
@@ -32,11 +32,11 @@ const ProfilePage: React.FC = () => {
             <Row gutter={16}>
               <Col span={8}>
                 <Statistic
-                  title="本月消费"
+                  title="近30天消费"
                   value={data?.month_total_amount || 0}
                   prefix="¥"
                   precision={2}
-                  valueStyle={{ color: '#f5222d' }}
+                  valueStyle={{ color: '#EF4444', fontWeight: 600 }}
                 />
               </Col>
               <Col span={8}>
@@ -61,7 +61,7 @@ const ProfilePage: React.FC = () => {
                 <Statistic
                   title="营养综合分"
                   value={data?.nutrition_score || '暂无'}
-                  valueStyle={{ color: '#52c41a' }}
+                  valueStyle={{ color: '#10B981', fontWeight: 600 }}
                 />
               </Col>
             </Row>

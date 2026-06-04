@@ -60,6 +60,18 @@ export interface CanteenListResponse {
   window_count: number
 }
 
+export interface CanteenCreate {
+  name: string
+  location?: string
+  floor?: number
+}
+
+export interface CanteenUpdate {
+  name?: string
+  location?: string
+  floor?: number
+}
+
 // Window types
 export interface WindowResponse {
   window_id: string
@@ -274,6 +286,12 @@ export interface GroupNutritionStats {
 export interface GroupNutritionReport {
   group_by: 'department' | 'grade'
   groups: GroupNutritionStats[]
+}
+
+export interface StudentUpdate {
+  name?: string
+  department?: string
+  grade?: string
 }
 
 // Data import types
