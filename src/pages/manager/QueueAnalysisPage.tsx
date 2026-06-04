@@ -7,7 +7,7 @@ const levelColor: Record<string, string> = { '畅通': 'green', '普通': 'blue'
 export default function QueueAnalysisPage() {
   const { data, isLoading } = useQuery({
     queryKey: ['operations-dashboard'],
-    queryFn: dashboardApi.operations,
+    queryFn: () => dashboardApi.operations(),
   })
 
   return (

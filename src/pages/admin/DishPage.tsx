@@ -15,7 +15,7 @@ const AdminDishPage: React.FC = () => {
 
   const { data: canteens } = useQuery({
     queryKey: ['canteens'],
-    queryFn: canteenApi.list,
+    queryFn: () => canteenApi.list(),
   })
 
   const { data, isLoading } = useQuery({

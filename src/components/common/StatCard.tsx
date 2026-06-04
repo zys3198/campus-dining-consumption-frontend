@@ -27,15 +27,16 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, suffix, prefix, trend
         value={value}
         precision={precision}
         suffix={suffix}
-        prefix={prefix}
+        prefix={
+          prefix ? (
+            <span style={{ color: '#64748B', fontSize: 13, fontWeight: 500 }}>
+              {prefix}
+            </span>
+          ) : undefined
+        }
         valueStyle={{
           color: trend && trend < 0 ? '#EF4444' : '#0D9488',
           fontWeight: 600,
-        }}
-        prefixStyle={{
-          color: '#64748B',
-          fontSize: 13,
-          fontWeight: 500,
         }}
       />
     </Card>

@@ -17,7 +17,7 @@ export default function NutritionAnalysisPage() {
 
   const driQuery = useQuery({
     queryKey: ['nutrition-dris'],
-    queryFn: nutritionApi.getDRIs,
+    queryFn: () => nutritionApi.getDRIs(),
   })
 
   const evalColor: Record<string, string> = { '达标': 'green', '偏高': 'red', '偏低': 'orange' }

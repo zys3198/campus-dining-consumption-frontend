@@ -11,7 +11,7 @@ const levelToColor: Record<string, string> = { '畅通': '#52c41a', '普通': '#
 const RealtimePage: React.FC = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['realtime'],
-    queryFn: dashboardApi.realtime,
+    queryFn: () => dashboardApi.realtime(),
     refetchInterval: 30000,
   })
 

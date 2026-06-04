@@ -11,7 +11,7 @@ const ProfilePage: React.FC = () => {
 
   const { data } = useQuery({
     queryKey: ['student-dashboard'],
-    queryFn: dashboardApi.student,
+    queryFn: () => dashboardApi.student(),
   })
 
   return (

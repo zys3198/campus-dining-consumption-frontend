@@ -30,22 +30,30 @@ export const transactionApi = {
 
 export const dashboardApi = {
   operations: async (params?: { date?: string }): Promise<OperationsDashboard> => {
-    const res = await apiClient.get<{ data: OperationsDashboard }>('/dashboards/operations', { params })
+    const res = await apiClient.get<{ data: OperationsDashboard }>('/dashboards/operations', {
+      params: { target_date: params?.date },
+    })
     return res.data.data
   },
 
   nutrition: async (params?: { date?: string }): Promise<NutritionDashboard> => {
-    const res = await apiClient.get<{ data: NutritionDashboard }>('/dashboards/nutrition', { params })
+    const res = await apiClient.get<{ data: NutritionDashboard }>('/dashboards/nutrition', {
+      params: { target_date: params?.date },
+    })
     return res.data.data
   },
 
   student: async (params?: { date?: string }): Promise<StudentDashboard> => {
-    const res = await apiClient.get<{ data: StudentDashboard }>('/dashboards/student', { params })
+    const res = await apiClient.get<{ data: StudentDashboard }>('/dashboards/student', {
+      params: { target_date: params?.date },
+    })
     return res.data.data
   },
 
   realtime: async (params?: { date?: string }): Promise<RealtimeDashboard> => {
-    const res = await apiClient.get<{ data: RealtimeDashboard }>('/dashboards/realtime', { params })
+    const res = await apiClient.get<{ data: RealtimeDashboard }>('/dashboards/realtime', {
+      params: { target_date: params?.date },
+    })
     return res.data.data
   },
 }

@@ -6,7 +6,7 @@ import { canteenApi } from '@/api/resources'
 const AdminCanteenPage: React.FC = () => {
   const { data: canteens } = useQuery({
     queryKey: ['canteens'],
-    queryFn: canteenApi.list,
+    queryFn: () => canteenApi.list(),
   })
 
   return (

@@ -75,7 +75,7 @@ export function createMockOperationsDashboard(
         avg_wait_seconds: 60,
         max_queue_length: 5,
         sample_count: 45,
-        level: '普通',
+        level: '轻微',
       },
     ],
     ...overrides,

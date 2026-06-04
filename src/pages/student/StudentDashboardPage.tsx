@@ -6,7 +6,7 @@ import { StatCard } from '@/components/common/StatCard'
 export default function StudentDashboardPage() {
   const { data } = useQuery({
     queryKey: ['student-dashboard'],
-    queryFn: dashboardApi.student,
+    queryFn: () => dashboardApi.student(),
   })
 
   return (

@@ -20,11 +20,11 @@ export default function OperationsDashboardPage() {
   const tabItems = [
     {
       key: 'overview',
-      label: '今日概览',
+      label: '概览',
       children: (
         <Row gutter={16}>
-          <Col span={6}><StatCard title="今日销售额" value={data?.today?.total_amount ?? 0} suffix="元" precision={2} /></Col>
-          <Col span={6}><StatCard title="今日订单数" value={data?.today?.total_count ?? 0} suffix="笔" /></Col>
+          <Col span={6}><StatCard title="销售额" value={data?.today?.total_amount ?? 0} suffix="元" precision={2} /></Col>
+          <Col span={6}><StatCard title="订单数" value={data?.today?.total_count ?? 0} suffix="笔" /></Col>
           <Col span={6}><StatCard title="就餐人数" value={data?.today?.student_count ?? 0} suffix="人" /></Col>
           <Col span={6}><StatCard title="人均消费" value={data?.today?.avg_per_person ?? 0} suffix="元" precision={2} /></Col>
         </Row>

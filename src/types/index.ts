@@ -203,7 +203,7 @@ export interface CongestionItem {
   avg_wait_seconds: number
   max_queue_length: number
   sample_count: number
-  level: '畅通' | '普通' | '拥堵' | '严重'
+  level: '畅通' | '轻微' | '拥堵' | '严重'
 }
 
 export interface NutritionDashboard {
