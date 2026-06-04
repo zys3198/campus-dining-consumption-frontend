@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { windowApi, canteenApi } from '@/api/resources'
 import { getErrorDetail } from '@/api/error'
 import type { WindowResponse } from '@/types'
-import { buildFilters } from '@/utils/table'
+import { buildFilters, naturalCompare } from '@/utils/table'
 
 interface FormValues {
   window_id: string
@@ -118,8 +118,8 @@ export default function WindowManagePage() {
       <Table
         dataSource={data?.data}
         columns={[
-          { title: '窗口ID', dataIndex: 'window_id', key: 'window_id', sorter: (a, b) => a.window_id.localeCompare(b.window_id) },
-          { title: '名称', dataIndex: 'window_name', key: 'window_name', sorter: (a, b) => a.window_name.localeCompare(b.window_name) },
+          { title: '窗口ID', dataIndex: 'window_id', key: 'window_id', sorter: (a, b) => naturalCompare(a.window_id, b.window_id) },
+          { title: '名称', dataIndex: 'window_name', key: 'window_name', sorter: (a, b) => naturalCompare(a.window_name, b.window_name) },
           {
             title: '所属食堂', dataIndex: 'canteen_name', key: 'canteen_name',
             filters: buildFilters(data?.data ?? [], d => d.canteen_name),
@@ -127,7 +127,7 @@ export default function WindowManagePage() {
           },
           {
             title: '类型', dataIndex: 'window_type', key: 'window_type',
-            sorter: (a, b) => a.window_type.localeCompare(b.window_type),
+            sorter: (a, b) => naturalCompare(a.window_type, b.window_type),
             filters: buildFilters(data?.data ?? [], d => d.window_type),
             onFilter: (value, record) => record.window_type === value,
           },
@@ -200,8 +200,11 @@ export default function WindowManagePage() {
         destroyOnClose
       >
         <Form form={form} layout="vertical" autoComplete="off">
-          <Form.Item name="window_id" label="窗口ID" rules={editing ? [] : [{ required: true, message: '请输入窗口ID' }]}>
-            <Input placeholder="请输入窗口ID，如：W10" disabled={!!editing} />
+          <Form.Item name="window_id" label="窗口ID" rules={editing ? [] : [
+            { required: true, message: '请输入窗口ID' },
+            { pattern: /^W\d+$/, message: '格式：W + 数字，如 W10' },
+          ]}>
+            <Input placeholder="如 W10、W032" disabled={!!editing} />
           </Form.Item>
           <Form.Item name="window_name" label="窗口名称" rules={[{ required: true, message: '请输入窗口名称' }]}>
             <Input placeholder="请输入窗口名称" />

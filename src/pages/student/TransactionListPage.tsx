@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Table, Card, DatePicker, Space } from 'antd'
+import type { ColumnsType } from 'antd/es/table'
 import { useQuery } from '@tanstack/react-query'
 import { transactionApi } from '@/api/dashboard'
 import type { TransactionResponse } from '@/types'
-import { buildFilters } from '@/utils/table'
+import { buildFilters, naturalCompare } from '@/utils/table'
 
 const { RangePicker } = DatePicker
 
@@ -22,7 +23,7 @@ export default function TransactionListPage() {
     }),
   })
 
-  const columns = [
+  const columns: ColumnsType<TransactionResponse> = [
     {
       title: '时间', dataIndex: 'txn_time', key: 'txn_time',
       sorter: (a: TransactionResponse, b: TransactionResponse) => new Date(a.txn_time).getTime() - new Date(b.txn_time).getTime(),
@@ -31,15 +32,15 @@ export default function TransactionListPage() {
     },
     {
       title: '窗口', dataIndex: 'window_name', key: 'window_name',
-      sorter: (a: TransactionResponse, b: TransactionResponse) => (a.window_name ?? '').localeCompare(b.window_name ?? ''),
+      sorter: (a: TransactionResponse, b: TransactionResponse) => naturalCompare(a.window_name ?? '', b.window_name ?? ''),
       filters: buildFilters(data?.data ?? [], (d: TransactionResponse) => d.window_name),
-      onFilter: (value: string | number, record: TransactionResponse) => record.window_name === value,
+      onFilter: (value, record) => record.window_name === value,
     },
     { title: '金额', dataIndex: 'total_amount', key: 'total_amount', sorter: (a: TransactionResponse, b: TransactionResponse) => a.total_amount - b.total_amount, render: (v: number) => `¥${v.toFixed(2)}` },
     {
       title: '餐段', dataIndex: 'meal_type', key: 'meal_type',
       filters: MEAL_NAMES.map((name, i) => ({ text: name, value: i + 1 })),
-      onFilter: (value: string | number, record: TransactionResponse) => record.meal_type === value,
+      onFilter: (value, record) => record.meal_type === value,
       render: (m: number) => MEAL_NAMES[m - 1] || `餐段${m}`,
     },
     { title: '餐品', dataIndex: 'dishes', key: 'dishes', render: (dishes: TransactionResponse['dishes']) => dishes?.map(d => d.dish_name).join(', ') || '-' },

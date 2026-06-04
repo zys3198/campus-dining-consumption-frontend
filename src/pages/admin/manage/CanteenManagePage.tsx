@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { canteenApi } from '@/api/resources'
 import { getErrorDetail } from '@/api/error'
 import type { CanteenListResponse, CanteenCreate, CanteenUpdate } from '@/types'
-import { buildFilters } from '@/utils/table'
+import { buildFilters, naturalCompare } from '@/utils/table'
 
 interface FormValues {
   name: string
@@ -96,8 +96,8 @@ export default function CanteenManagePage() {
       <Table
         dataSource={data}
         columns={[
-          { title: '食堂ID', dataIndex: 'canteen_id', key: 'canteen_id', sorter: (a, b) => a.canteen_id.localeCompare(b.canteen_id) },
-          { title: '名称', dataIndex: 'name', key: 'name', sorter: (a, b) => a.name.localeCompare(b.name) },
+          { title: '食堂ID', dataIndex: 'canteen_id', key: 'canteen_id', sorter: (a, b) => naturalCompare(a.canteen_id, b.canteen_id) },
+          { title: '名称', dataIndex: 'name', key: 'name', sorter: (a, b) => naturalCompare(a.name, b.name) },
           {
             title: '位置', dataIndex: 'location', key: 'location',
             filters: buildFilters(data ?? [], d => d.location),

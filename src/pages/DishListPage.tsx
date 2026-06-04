@@ -5,6 +5,7 @@ import { SearchOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { dishApi, canteenApi } from '@/api/resources'
 import type { DishResponse } from '@/types'
+import { naturalCompare } from '@/utils/table'
 
 const { Title } = Typography
 
@@ -54,10 +55,10 @@ const DishListPage: React.FC = () => {
         </Space>
       ),
     },
-    { title: '窗口', dataIndex: 'window_name', key: 'window_name', sorter: (a: DishResponse, b: DishResponse) => (a.window_name ?? '').localeCompare(b.window_name ?? '') },
+    { title: '窗口', dataIndex: 'window_name', key: 'window_name', sorter: (a: DishResponse, b: DishResponse) => naturalCompare(a.window_name ?? '', b.window_name ?? '') },
     {
       title: '分类', dataIndex: 'category', key: 'category',
-      sorter: (a: DishResponse, b: DishResponse) => a.category.localeCompare(b.category),
+      sorter: (a: DishResponse, b: DishResponse) => naturalCompare(a.category, b.category),
       render: (c: string) => <Tag color="blue">{c}</Tag>,
     },
     {

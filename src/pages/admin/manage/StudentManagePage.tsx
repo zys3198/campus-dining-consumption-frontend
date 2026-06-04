@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { studentApi } from '@/api/resources'
 import { getErrorDetail } from '@/api/error'
 import type { StudentRecord, StudentUpdate } from '@/types'
-import { buildFilters } from '@/utils/table'
+import { buildFilters, naturalCompare } from '@/utils/table'
 
 interface FormValues {
   name: string
@@ -72,17 +72,17 @@ export default function StudentManagePage() {
       <Table
         dataSource={data?.data}
         columns={[
-          { title: '学号', dataIndex: 'student_id', key: 'student_id', sorter: (a, b) => a.student_id.localeCompare(b.student_id) },
-          { title: '姓名', dataIndex: 'name', key: 'name', sorter: (a, b) => a.name.localeCompare(b.name) },
+          { title: '学号', dataIndex: 'student_id', key: 'student_id', sorter: (a, b) => naturalCompare(a.student_id, b.student_id) },
+          { title: '姓名', dataIndex: 'name', key: 'name', sorter: (a, b) => naturalCompare(a.name, b.name) },
           {
             title: '院系', dataIndex: 'department', key: 'department',
-            sorter: (a, b) => a.department.localeCompare(b.department),
+            sorter: (a, b) => naturalCompare(a.department, b.department),
             filters: buildFilters(data?.data ?? [], d => d.department),
             onFilter: (value, record) => record.department === value,
           },
           {
             title: '年级', dataIndex: 'grade', key: 'grade',
-            sorter: (a, b) => a.grade.localeCompare(b.grade),
+            sorter: (a, b) => naturalCompare(a.grade, b.grade),
             filters: buildFilters(data?.data ?? [], d => d.grade),
             onFilter: (value, record) => record.grade === value,
           },

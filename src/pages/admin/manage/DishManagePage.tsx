@@ -6,7 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { dishApi, windowApi } from '@/api/resources'
 import { getErrorDetail } from '@/api/error'
 import type { DishResponse, DishCreate, DishUpdate } from '@/types'
-import { buildFilters } from '@/utils/table'
+import { buildFilters, naturalCompare } from '@/utils/table'
 
 interface FormValues {
   dish_id: string
@@ -117,12 +117,12 @@ export default function DishManagePage() {
       <Table
         dataSource={data?.data}
         columns={[
-          { title: '餐品ID', dataIndex: 'dish_id', key: 'dish_id', sorter: (a, b) => a.dish_id.localeCompare(b.dish_id) },
-          { title: '名称', dataIndex: 'dish_name', key: 'dish_name', sorter: (a, b) => a.dish_name.localeCompare(b.dish_name) },
+          { title: '餐品ID', dataIndex: 'dish_id', key: 'dish_id', sorter: (a, b) => naturalCompare(a.dish_id, b.dish_id) },
+          { title: '名称', dataIndex: 'dish_name', key: 'dish_name', sorter: (a, b) => naturalCompare(a.dish_name, b.dish_name) },
           { title: '价格', dataIndex: 'price', key: 'price', sorter: (a, b) => a.price - b.price, render: (p: number) => `¥${p.toFixed(2)}` },
           {
             title: '分类', dataIndex: 'category', key: 'category',
-            sorter: (a, b) => a.category.localeCompare(b.category),
+            sorter: (a, b) => naturalCompare(a.category, b.category),
             filters: buildFilters(data?.data ?? [], d => d.category),
             onFilter: (value, record) => record.category === value,
             render: (c: string) => <Tag>{c}</Tag>,
@@ -184,8 +184,11 @@ export default function DishManagePage() {
         width={520}
       >
         <Form form={form} layout="vertical" autoComplete="off">
-          <Form.Item name="dish_id" label="餐品ID" rules={editing ? [] : [{ required: true, message: '请输入餐品ID' }]}>
-            <Input placeholder="请输入餐品ID" disabled={!!editing} />
+          <Form.Item name="dish_id" label="餐品ID" rules={editing ? [] : [
+            { required: true, message: '请输入餐品ID' },
+            { pattern: /^D\d+$/, message: '格式：D + 数字，如 D10' },
+          ]}>
+            <Input placeholder="如 D1、D20" disabled={!!editing} />
           </Form.Item>
           <Form.Item name="dish_name" label="餐品名称" rules={[{ required: true, message: '请输入餐品名称' }]}>
             <Input placeholder="请输入餐品名称" />
