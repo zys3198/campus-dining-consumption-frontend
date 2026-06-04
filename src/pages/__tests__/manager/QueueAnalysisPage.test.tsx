@@ -13,7 +13,7 @@ describe('QueueAnalysisPage', () => {
   it('should render queue analysis page', async () => {
     renderPage()
     await waitFor(() => {
-      expect(screen.getByText('窗口排队分析')).toBeInTheDocument()
+      expect(screen.getByText('排队分析')).toBeInTheDocument()
     })
   })
 

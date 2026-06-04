@@ -1,6 +1,7 @@
 import apiClient from './client'
 import type {
   APIResponse,
+  CanteenResponse,
   CanteenListResponse,
   CanteenCreate,
   CanteenUpdate,
@@ -20,18 +21,18 @@ export const canteenApi = {
     return res.data.data
   },
 
-  get: async (canteenId: string): Promise<CanteenListResponse> => {
-    const res = await apiClient.get<APIResponse<CanteenListResponse>>(`/canteens/${canteenId}`)
+  get: async (canteenId: string): Promise<CanteenResponse> => {
+    const res = await apiClient.get<APIResponse<CanteenResponse>>(`/canteens/${canteenId}`)
     return res.data.data
   },
 
-  create: async (data: CanteenCreate): Promise<CanteenListResponse> => {
-    const res = await apiClient.post<APIResponse<CanteenListResponse>>('/canteens/', data)
+  create: async (data: CanteenCreate): Promise<CanteenResponse> => {
+    const res = await apiClient.post<APIResponse<CanteenResponse>>('/canteens/', data)
     return res.data.data
   },
 
-  update: async (canteenId: string, data: CanteenUpdate): Promise<CanteenListResponse> => {
-    const res = await apiClient.put<APIResponse<CanteenListResponse>>(`/canteens/${canteenId}`, data)
+  update: async (canteenId: string, data: CanteenUpdate): Promise<CanteenResponse> => {
+    const res = await apiClient.put<APIResponse<CanteenResponse>>(`/canteens/${canteenId}`, data)
     return res.data.data
   },
 

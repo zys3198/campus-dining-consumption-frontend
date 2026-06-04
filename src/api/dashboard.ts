@@ -6,6 +6,7 @@ import type {
   NutritionDashboard,
   StudentDashboard,
   RealtimeDashboard,
+  CongestionAnalysisResponse,
 } from '@/types'
 
 export const transactionApi = {
@@ -54,6 +55,11 @@ export const dashboardApi = {
     const res = await apiClient.get<{ data: RealtimeDashboard }>('/dashboards/realtime', {
       params: { target_date: params?.date },
     })
+    return res.data.data
+  },
+
+  queueAnalysis: async (params: { start_date: string; end_date: string }): Promise<CongestionAnalysisResponse> => {
+    const res = await apiClient.get<{ data: CongestionAnalysisResponse }>('/queue/analysis', { params })
     return res.data.data
   },
 }

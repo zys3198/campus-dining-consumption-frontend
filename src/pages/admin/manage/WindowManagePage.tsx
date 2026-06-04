@@ -7,6 +7,7 @@ import { windowApi, canteenApi } from '@/api/resources'
 import type { WindowResponse } from '@/types'
 
 interface FormValues {
+  window_id: string
   window_name: string
   canteen_id: string
   window_type: string
@@ -70,6 +71,7 @@ export default function WindowManagePage() {
   const openEdit = (record: WindowResponse) => {
     setEditing(record)
     form.setFieldsValue({
+      window_id: record.window_id,
       window_name: record.window_name,
       canteen_id: record.canteen_id,
       window_type: record.window_type,
@@ -154,6 +156,9 @@ export default function WindowManagePage() {
         destroyOnClose
       >
         <Form form={form} layout="vertical" autoComplete="off">
+          <Form.Item name="window_id" label="窗口ID" rules={editing ? [] : [{ required: true, message: '请输入窗口ID' }]}>
+            <Input placeholder="请输入窗口ID，如：W10" disabled={!!editing} />
+          </Form.Item>
           <Form.Item name="window_name" label="窗口名称" rules={[{ required: true, message: '请输入窗口名称' }]}>
             <Input placeholder="请输入窗口名称" />
           </Form.Item>

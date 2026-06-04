@@ -33,7 +33,7 @@ export default function DishManagePage() {
 
   const windowQuery = useQuery({
     queryKey: ['windows-select'],
-    queryFn: () => windowApi.list({ page_size: 200 }),
+    queryFn: () => windowApi.list({ page_size: 100 }),
   })
 
   const createMut = useMutation({

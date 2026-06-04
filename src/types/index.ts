@@ -52,6 +52,15 @@ export interface LoginResponse {
 }
 
 // Canteen types
+export interface CanteenResponse {
+  canteen_id: string
+  name: string
+  location?: string
+  floor?: number
+  created_at: string
+  updated_at: string
+}
+
 export interface CanteenListResponse {
   canteen_id: string
   name: string
@@ -300,4 +309,42 @@ export interface ImportResponse {
   skipped?: number
   error_count: number
   error_details?: string[]
+}
+
+// Queue analysis types
+export interface CongestionTopItem {
+  window_id: string
+  window_name: string
+  avg_wait_duration: number
+  record_count: number
+}
+
+export interface CongestionPeakItem {
+  hour: number
+  record_count: number
+  avg_wait_duration: number
+}
+
+export interface WindowEfficiencyItem {
+  window_id: string
+  window_name: string
+  canteen_name: string
+  avg_wait_duration: number
+  max_wait_duration: number
+  record_count: number
+}
+
+export interface CongestionDistributionItem {
+  level: string
+  count: number
+  percentage: number
+}
+
+export interface CongestionAnalysisResponse {
+  tops: CongestionTopItem[]
+  peaks: CongestionPeakItem[]
+  peak_hours: CongestionPeakItem[]
+  top_congested_windows: CongestionTopItem[]
+  window_efficiency: WindowEfficiencyItem[]
+  congestion_distribution: CongestionDistributionItem[]
 }

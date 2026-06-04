@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
-import { ConfigProvider, Spin, theme } from 'antd'
+import { App as AntApp, ConfigProvider, Spin, theme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import MainLayout from './components/layout/MainLayout'
 import LoginPage from './pages/LoginPage'
@@ -117,6 +117,7 @@ const App: React.FC = () => {
         algorithm: theme.defaultAlgorithm,
       }}
     >
+      <AntApp>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
@@ -162,6 +163,7 @@ const App: React.FC = () => {
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
+      </AntApp>
     </ConfigProvider>
   )
 }

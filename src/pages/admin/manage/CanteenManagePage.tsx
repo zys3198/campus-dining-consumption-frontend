@@ -63,7 +63,13 @@ export default function CanteenManagePage() {
   }
 
   const handleSubmit = async () => {
-    const values = await form.validateFields()
+    const raw = await form.validateFields()
+    // Ant Design Input 清空后返回空字符串/null，转为 undefined 让后端视为"未填写"
+    const values = {
+      ...raw,
+      location: raw.location || undefined,
+      floor: raw.floor ?? undefined,
+    }
     if (editing) {
       updateMut.mutate({ id: editing.canteen_id, values })
     } else {
