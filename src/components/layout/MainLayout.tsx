@@ -5,7 +5,6 @@ import {
   HomeOutlined,
   UserOutlined,
   LogoutOutlined,
-  RadarChartOutlined,
   ShoppingCartOutlined,
   BarChartOutlined,
   LineChartOutlined,
@@ -33,13 +32,11 @@ export const MainLayout: React.FC = () => {
     manager: [
       { key: '/manager/operations', icon: <BarChartOutlined />, label: '运营看板' },
       { key: '/manager/queue', icon: <TeamOutlined />, label: '排队分析' },
-      { key: '/manager/realtime', icon: <RadarChartOutlined />, label: '实时大屏' },
     ],
     admin: [
       { key: '/admin/dashboard', icon: <HomeOutlined />, label: '管理后台' },
       { key: '/admin/operations', icon: <BarChartOutlined />, label: '运营看板' },
       { key: '/admin/nutrition', icon: <LineChartOutlined />, label: '营养看板' },
-      { key: '/admin/realtime', icon: <RadarChartOutlined />, label: '实时大屏' },
       { key: '/admin/ai-query', icon: <DatabaseOutlined />, label: 'AI查询' },
       { key: '/admin/canteens', icon: <TeamOutlined />, label: '食堂管理' },
       { key: '/admin/windows', icon: <TeamOutlined />, label: '窗口管理' },

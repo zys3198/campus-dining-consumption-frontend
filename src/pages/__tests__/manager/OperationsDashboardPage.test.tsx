@@ -6,6 +6,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import OperationsDashboardPage from '@/pages/manager/OperationsDashboardPage'
 
 vi.mock('echarts-for-react', () => ({ default: () => <div data-testid="echart" /> }))
+vi.mock('@/hooks/useRealtimeSSE', () => ({
+  useRealtimeSSE: () => ({ data: null, error: null }),
+}))
 
 function renderPage() {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } })
@@ -15,25 +18,24 @@ function renderPage() {
 describe('OperationsDashboardPage', () => {
   it('should render tab titles', async () => {
     renderPage()
-    await waitFor(() => { expect(screen.getByText('今日概览')).toBeInTheDocument() })
+    await waitFor(() => { expect(screen.getByText('概览')).toBeInTheDocument() })
     expect(screen.getByText('窗口排行')).toBeInTheDocument()
     expect(screen.getByText('7日趋势')).toBeInTheDocument()
     expect(screen.getByText('餐段分解')).toBeInTheDocument()
     expect(screen.getByText('实时拥堵')).toBeInTheDocument()
   })
 
-  it('should display sales stats', async () => {
+  it('should display overview stats', async () => {
     renderPage()
     await waitFor(() => {
-      expect(screen.getByText('今日销售额')).toBeInTheDocument()
-      expect(screen.getByText('今日订单数')).toBeInTheDocument()
+      expect(screen.getByText('销售额')).toBeInTheDocument()
+      expect(screen.getByText('订单数')).toBeInTheDocument()
     })
   })
 
   it('should switch between tabs and render content', async () => {
     renderPage()
-    await screen.findByText('今日概览')
-    // Click on different tab
+    await screen.findByText('概览')
     const windowTab = screen.getByText('窗口排行')
     await userEvent.click(windowTab)
     await waitFor(() => {
@@ -43,11 +45,23 @@ describe('OperationsDashboardPage', () => {
 
   it('should render window ranking table in windows tab', async () => {
     renderPage()
-    await screen.findByText('今日概览')
+    await screen.findByText('概览')
     const windowTab = screen.getByText('窗口排行')
     await userEvent.click(windowTab)
     await waitFor(() => {
       expect(screen.getByText('川菜窗口')).toBeInTheDocument()
+    })
+  })
+
+  it('should render congestion tab with heatmap and bar', async () => {
+    renderPage()
+    await screen.findByText('概览')
+    const congestionTab = screen.getByText('实时拥堵')
+    await userEvent.click(congestionTab)
+    await waitFor(() => {
+      expect(screen.getByText('拥堵窗口')).toBeInTheDocument()
+      expect(screen.getByText('实时窗口状态')).toBeInTheDocument()
+      expect(screen.getByText('全天拥堵热力图（15分钟分段）')).toBeInTheDocument()
     })
   })
 
@@ -70,8 +84,7 @@ describe('OperationsDashboardPage', () => {
       })
     )
     renderPage()
-    await screen.findByText('今日概览')
-    // Should show zero values without crashing
-    expect(screen.getByText('今日销售额')).toBeInTheDocument()
+    await screen.findByText('概览')
+    expect(screen.getByText('销售额')).toBeInTheDocument()
   })
 })

@@ -14,7 +14,6 @@ import ProfilePage from './pages/ProfilePage'
 // 经理页面
 import OperationsDashboardPage from './pages/manager/OperationsDashboardPage'
 import QueueAnalysisPage from './pages/manager/QueueAnalysisPage'
-import RealtimePage from './pages/manager/RealtimePage'
 
 // 管理员页面
 import AdminDashboardPage from './pages/admin/AdminDashboardPage'
@@ -140,7 +139,6 @@ const App: React.FC = () => {
             <Route element={<MainLayout />}>
               <Route path="/manager/operations" element={<OperationsDashboardPage />} />
               <Route path="/manager/queue" element={<QueueAnalysisPage />} />
-              <Route path="/manager/realtime" element={<RealtimePage />} />
             </Route>
           </Route>
 
@@ -150,7 +148,6 @@ const App: React.FC = () => {
               <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
               <Route path="/admin/operations" element={<OperationsDashboardPage />} />
               <Route path="/admin/nutrition" element={<NutritionDashboardPage />} />
-              <Route path="/admin/realtime" element={<RealtimePage />} />
               <Route path="/admin/ai-query" element={<AISqlQueryPage />} />
               <Route path="/admin/canteens" element={<CanteenManagePage />} />
               <Route path="/admin/windows" element={<WindowManagePage />} />

@@ -1,21 +1,43 @@
 import { useState } from 'react'
-import { Row, Col, Card, Tabs, Table, DatePicker } from 'antd'
+import { Row, Col, Card, Tabs, Table, DatePicker, Tag } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import dayjs, { type Dayjs } from 'dayjs'
 import { dashboardApi } from '@/api/dashboard'
+import { useRealtimeSSE } from '@/hooks/useRealtimeSSE'
 import { StatCard } from '@/components/common/StatCard'
 import { TrendLineChart } from '@/components/charts/TrendLineChart'
 import { MealBreakdownPie } from '@/components/charts/MealBreakdownPie'
 import { CongestionBar } from '@/components/charts/CongestionBar'
+import { CongestionHeatmap } from '@/components/charts/CongestionHeatmap'
+import type { CongestionItem } from '@/types'
 
 export default function OperationsDashboardPage() {
   const [date, setDate] = useState<Dayjs>(dayjs())
   const dateStr = date.format('YYYY-MM-DD')
+  const isToday = dateStr === dayjs().format('YYYY-MM-DD')
 
   const { data, isLoading } = useQuery({
     queryKey: ['operations-dashboard', dateStr],
     queryFn: () => dashboardApi.operations({ date: dateStr }),
   })
+
+  // Full-day heatmap data
+  const { data: heatmapData, isLoading: heatmapLoading } = useQuery({
+    queryKey: ['congestion-heatmap', dateStr],
+    queryFn: () => dashboardApi.heatmap(dateStr),
+  })
+
+  // SSE live push (today only)
+  const { data: sseData } = useRealtimeSSE('/api/v1/dashboards/realtime/stream', isToday)
+
+  // Prefer SSE congestion for today; fall back to operations data
+  const congestion: CongestionItem[] = isToday && sseData?.windows?.length
+    ? sseData.windows
+    : (data?.congestion ?? [])
+
+  const congestedCount = congestion.filter(
+    (w) => w.level === '拥堵' || w.level === '严重',
+  ).length
 
   const tabItems = [
     {
@@ -60,7 +82,31 @@ export default function OperationsDashboardPage() {
     {
       key: 'congestion',
       label: '实时拥堵',
-      children: <Card><CongestionBar data={data?.congestion ?? []} /></Card>,
+      children: (
+        <>
+          <Row gutter={16} style={{ marginBottom: 16 }}>
+            <Col span={8}>
+              <Card>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ color: '#64748B', fontSize: 13 }}>拥堵窗口</div>
+                  <Tag
+                    color={congestedCount > 0 ? '#EF4444' : '#10B981'}
+                    style={{ fontSize: 18, marginTop: 8, borderRadius: 6 }}
+                  >
+                    {congestedCount} 个
+                  </Tag>
+                </div>
+              </Card>
+            </Col>
+          </Row>
+          <Card title="实时窗口状态" style={{ marginBottom: 16 }}>
+            <CongestionBar data={congestion} />
+          </Card>
+          <Card title="全天拥堵热力图（15分钟分段）" loading={heatmapLoading}>
+            <CongestionHeatmap data={heatmapData ?? []} />
+          </Card>
+        </>
+      ),
     },
   ]
 
@@ -75,6 +121,7 @@ export default function OperationsDashboardPage() {
           maxDate={dayjs()}
           style={{ width: 180 }}
         />
+        {!isToday && <Tag color="orange">历史模式（非实时）</Tag>}
       </div>
       <Tabs items={tabItems} />
     </div>
