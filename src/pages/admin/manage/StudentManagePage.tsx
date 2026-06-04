@@ -4,6 +4,7 @@ import { EditOutlined } from '@ant-design/icons'
 import type { TablePaginationConfig } from 'antd'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { studentApi } from '@/api/resources'
+import { getErrorDetail } from '@/api/error'
 import type { StudentRecord, StudentUpdate } from '@/types'
 
 interface FormValues {
@@ -34,7 +35,7 @@ export default function StudentManagePage() {
       message.success('更新成功')
       closeModal()
     },
-    onError: () => message.error('更新失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '更新失败')),
   })
 
   const openEdit = (record: StudentRecord) => {

@@ -3,6 +3,7 @@ import { Card, Table, Button, Space, Modal, Form, Input, Select, message, Tag } 
 import { EditOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { windowApi } from '@/api/resources'
+import { getErrorDetail } from '@/api/error'
 import type { WindowResponse } from '@/types'
 
 const AdminWindowPage: React.FC = () => {
@@ -20,13 +21,13 @@ const AdminWindowPage: React.FC = () => {
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) => windowApi.update(id, data),
     onSuccess: () => { message.success('更新成功'); setModalVisible(false); queryClient.invalidateQueries({ queryKey: ['admin-windows'] }) },
-    onError: () => message.error('更新失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '更新失败')),
   })
 
   const statusMutation = useMutation({
     mutationFn: ({ id, status }: { id: string; status: number }) => windowApi.updateStatus(id, status),
     onSuccess: () => { message.success('状态更新成功'); queryClient.invalidateQueries({ queryKey: ['admin-windows'] }) },
-    onError: () => message.error('更新失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '更新失败')),
   })
 
   const columns = [

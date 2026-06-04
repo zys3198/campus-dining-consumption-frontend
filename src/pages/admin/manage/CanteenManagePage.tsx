@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Card, Table, Button, Modal, Form, Input, InputNumber, App } from 'antd'
-import { PlusOutlined, EditOutlined } from '@ant-design/icons'
+import { Card, Table, Button, Modal, Form, Input, InputNumber, App, Popconfirm } from 'antd'
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { canteenApi } from '@/api/resources'
+import { getErrorDetail } from '@/api/error'
 import type { CanteenListResponse, CanteenCreate, CanteenUpdate } from '@/types'
 
 interface FormValues {
@@ -31,7 +32,7 @@ export default function CanteenManagePage() {
       message.success('食堂创建成功')
       closeModal()
     },
-    onError: () => message.error('创建失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '创建失败')),
   })
 
   const updateMut = useMutation({
@@ -41,7 +42,16 @@ export default function CanteenManagePage() {
       message.success('更新成功')
       closeModal()
     },
-    onError: () => message.error('更新失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '更新失败')),
+  })
+
+  const deleteMut = useMutation({
+    mutationFn: (id: string) => canteenApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-canteens'] })
+      message.success('删除成功')
+    },
+    onError: (err: any) => message.error(getErrorDetail(err, '删除失败')),
   })
 
   const openCreate = () => {
@@ -94,7 +104,31 @@ export default function CanteenManagePage() {
             title: '操作',
             key: 'action',
             render: (_, record) => (
-              <Button type="link" icon={<EditOutlined />} onClick={() => openEdit(record)}>编辑</Button>
+              <>
+                <Button type="link" icon={<EditOutlined />} onClick={() => openEdit(record)}>编辑</Button>
+                <Popconfirm
+                  title="确认删除"
+                  description={
+                    record.window_count > 0
+                      ? `该食堂下仍有 ${record.window_count} 个窗口，无法删除`
+                      : `确定要删除「${record.name}」吗？此操作不可撤销。`
+                  }
+                  onConfirm={() => deleteMut.mutate(record.canteen_id)}
+                  okText="删除"
+                  cancelText="取消"
+                  okButtonProps={{ danger: true, disabled: record.window_count > 0 }}
+                >
+                  <Button
+                    type="link"
+                    danger
+                    icon={<DeleteOutlined />}
+                    loading={deleteMut.isPending && deleteMut.variables === record.canteen_id}
+                    disabled={record.window_count > 0}
+                  >
+                    删除
+                  </Button>
+                </Popconfirm>
+              </>
             ),
           },
         ]}

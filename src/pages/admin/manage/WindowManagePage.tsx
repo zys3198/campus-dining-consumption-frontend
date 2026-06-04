@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Card, Table, Tag, Button, Modal, Form, Input, Select, Space, App } from 'antd'
-import { PlusOutlined, EditOutlined, SwapOutlined } from '@ant-design/icons'
+import { Card, Table, Tag, Button, Modal, Form, Input, Select, Space, App, Popconfirm } from 'antd'
+import { PlusOutlined, EditOutlined, SwapOutlined, DeleteOutlined } from '@ant-design/icons'
 import type { TablePaginationConfig } from 'antd'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { windowApi, canteenApi } from '@/api/resources'
+import { getErrorDetail } from '@/api/error'
 import type { WindowResponse } from '@/types'
 
 interface FormValues {
@@ -40,7 +41,7 @@ export default function WindowManagePage() {
       message.success('窗口创建成功')
       closeModal()
     },
-    onError: () => message.error('创建失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '创建失败')),
   })
 
   const updateMut = useMutation({
@@ -50,7 +51,7 @@ export default function WindowManagePage() {
       message.success('更新成功')
       closeModal()
     },
-    onError: () => message.error('更新失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '更新失败')),
   })
 
   const statusMut = useMutation({
@@ -59,7 +60,16 @@ export default function WindowManagePage() {
       queryClient.invalidateQueries({ queryKey: ['admin-windows'] })
       message.success('状态已切换')
     },
-    onError: () => message.error('状态切换失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '状态切换失败')),
+  })
+
+  const deleteMut = useMutation({
+    mutationFn: (id: string) => windowApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-windows'] })
+      message.success('删除成功')
+    },
+    onError: (err: any) => message.error(getErrorDetail(err, '删除失败')),
   })
 
   const openCreate = () => {
@@ -131,7 +141,26 @@ export default function WindowManagePage() {
             title: '操作',
             key: 'action',
             render: (_, record) => (
-              <Button type="link" icon={<EditOutlined />} onClick={() => openEdit(record)}>编辑</Button>
+              <Space>
+                <Button type="link" icon={<EditOutlined />} onClick={() => openEdit(record)}>编辑</Button>
+                <Popconfirm
+                  title="确定删除此窗口？"
+                  description="窗口下有餐品时无法删除"
+                  onConfirm={() => deleteMut.mutate(record.window_id)}
+                  okText="删除"
+                  cancelText="取消"
+                  okButtonProps={{ danger: true }}
+                >
+                  <Button
+                    type="link"
+                    danger
+                    icon={<DeleteOutlined />}
+                    loading={deleteMut.isPending && deleteMut.variables === record.window_id}
+                  >
+                    删除
+                  </Button>
+                </Popconfirm>
+              </Space>
             ),
           },
         ]}

@@ -36,6 +36,10 @@ export const canteenApi = {
     return res.data.data
   },
 
+  delete: async (canteenId: string): Promise<void> => {
+    await apiClient.delete(`/canteens/${canteenId}`)
+  },
+
   listWindows: async (canteenId: string): Promise<WindowResponse[]> => {
     const res = await apiClient.get<APIResponse<WindowResponse[]>>(`/canteens/${canteenId}/windows`)
     return res.data.data
@@ -66,6 +70,10 @@ export const windowApi = {
   updateStatus: async (windowId: string, status: number): Promise<WindowResponse> => {
     const res = await apiClient.put<APIResponse<WindowResponse>>(`/windows/${windowId}/status`, { status })
     return res.data.data
+  },
+
+  delete: async (windowId: string): Promise<void> => {
+    await apiClient.delete(`/windows/${windowId}`)
   },
 }
 

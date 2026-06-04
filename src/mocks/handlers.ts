@@ -112,6 +112,10 @@ export const handlers = [
     return HttpResponse.json({ code: 200, message: 'success', data: createMockWindow({ status: body.status }) })
   }),
 
+  http.delete('*/windows/:id', () => {
+    return HttpResponse.json({ code: 200, message: 'success' })
+  }),
+
   // Dish
   http.get('*/dishes', () => {
     return HttpResponse.json({

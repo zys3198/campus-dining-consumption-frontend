@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/stores/auth'
 import { authApi } from '@/api/auth'
+import { getErrorDetail } from '@/api/error'
 import { message } from 'antd'
 
 export const useLogin = () => {
@@ -12,7 +13,7 @@ export const useLogin = () => {
       message.success('登录成功')
       return true
     } catch (err: any) {
-      message.error(err.response?.data?.detail || '登录失败')
+      message.error(getErrorDetail(err, '登录失败'))
       return false
     }
   }

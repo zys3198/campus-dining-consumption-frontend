@@ -7,6 +7,7 @@ import type {
   StudentDashboard,
   RealtimeDashboard,
   CongestionAnalysisResponse,
+  HeatmapItem,
 } from '@/types'
 
 export const transactionApi = {
@@ -54,6 +55,13 @@ export const dashboardApi = {
   realtime: async (params?: { date?: string }): Promise<RealtimeDashboard> => {
     const res = await apiClient.get<{ data: RealtimeDashboard }>('/dashboards/realtime', {
       params: { target_date: params?.date },
+    })
+    return res.data.data
+  },
+
+  heatmap: async (date: string): Promise<HeatmapItem[]> => {
+    const res = await apiClient.get<{ data: HeatmapItem[] }>('/queue/heatmap', {
+      params: { date },
     })
     return res.data.data
   },

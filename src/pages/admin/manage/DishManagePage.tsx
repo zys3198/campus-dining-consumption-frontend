@@ -4,6 +4,7 @@ import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import type { TablePaginationConfig } from 'antd'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { dishApi, windowApi } from '@/api/resources'
+import { getErrorDetail } from '@/api/error'
 import type { DishResponse, DishCreate, DishUpdate } from '@/types'
 
 interface FormValues {
@@ -43,7 +44,7 @@ export default function DishManagePage() {
       message.success('餐品创建成功')
       closeModal()
     },
-    onError: () => message.error('创建失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '创建失败')),
   })
 
   const updateMut = useMutation({
@@ -53,7 +54,7 @@ export default function DishManagePage() {
       message.success('更新成功')
       closeModal()
     },
-    onError: () => message.error('更新失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '更新失败')),
   })
 
   const deleteMut = useMutation({
@@ -62,7 +63,7 @@ export default function DishManagePage() {
       queryClient.invalidateQueries({ queryKey: ['admin-dishes'] })
       message.success('已删除')
     },
-    onError: () => message.error('删除失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '删除失败')),
   })
 
   const openCreate = () => {

@@ -3,6 +3,7 @@ import { Card, Table, Button, Space, Input, Select, Modal, Form, message, Tag, I
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { dishApi, canteenApi } from '@/api/resources'
+import { getErrorDetail } from '@/api/error'
 import type { DishResponse } from '@/types'
 
 const AdminDishPage: React.FC = () => {
@@ -26,19 +27,19 @@ const AdminDishPage: React.FC = () => {
   const createMutation = useMutation({
     mutationFn: dishApi.create,
     onSuccess: () => { message.success('创建成功'); setModalVisible(false); queryClient.invalidateQueries({ queryKey: ['admin-dishes'] }) },
-    onError: () => message.error('创建失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '创建失败')),
   })
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: any }) => dishApi.update(id, data),
     onSuccess: () => { message.success('更新成功'); setModalVisible(false); queryClient.invalidateQueries({ queryKey: ['admin-dishes'] }) },
-    onError: () => message.error('更新失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '更新失败')),
   })
 
   const deleteMutation = useMutation({
     mutationFn: dishApi.delete,
     onSuccess: () => { message.success('删除成功'); queryClient.invalidateQueries({ queryKey: ['admin-dishes'] }) },
-    onError: () => message.error('删除失败'),
+    onError: (err: any) => message.error(getErrorDetail(err, '删除失败')),
   })
 
   const columns = [

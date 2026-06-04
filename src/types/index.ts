@@ -242,6 +242,15 @@ export interface RealtimeDashboard {
   windows: CongestionItem[]
 }
 
+export interface HeatmapItem {
+  window_id: string
+  window_name: string
+  time_slot: string
+  avg_wait_duration: number
+  congestion_level: string | null
+  congestion_color: string | null
+}
+
 // Nutrition types
 export interface DailyNutrition {
   date: string | Date
