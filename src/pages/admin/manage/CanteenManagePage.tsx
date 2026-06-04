@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { canteenApi } from '@/api/resources'
 import { getErrorDetail } from '@/api/error'
 import type { CanteenListResponse, CanteenCreate, CanteenUpdate } from '@/types'
+import { buildFilters } from '@/utils/table'
 
 interface FormValues {
   name: string
@@ -95,11 +96,20 @@ export default function CanteenManagePage() {
       <Table
         dataSource={data}
         columns={[
-          { title: '食堂ID', dataIndex: 'canteen_id', key: 'canteen_id' },
-          { title: '名称', dataIndex: 'name', key: 'name' },
-          { title: '位置', dataIndex: 'location', key: 'location' },
-          { title: '楼层', dataIndex: 'floor', key: 'floor' },
-          { title: '窗口数', dataIndex: 'window_count', key: 'window_count' },
+          { title: '食堂ID', dataIndex: 'canteen_id', key: 'canteen_id', sorter: (a, b) => a.canteen_id.localeCompare(b.canteen_id) },
+          { title: '名称', dataIndex: 'name', key: 'name', sorter: (a, b) => a.name.localeCompare(b.name) },
+          {
+            title: '位置', dataIndex: 'location', key: 'location',
+            filters: buildFilters(data ?? [], d => d.location),
+            onFilter: (value, record) => record.location === value,
+          },
+          {
+            title: '楼层', dataIndex: 'floor', key: 'floor',
+            sorter: (a, b) => (a.floor ?? 0) - (b.floor ?? 0),
+            filters: data ? [...new Set(data.map(d => d.floor))].filter((f): f is number => f != null).map(f => ({ text: `${f}F`, value: f })) : [],
+            onFilter: (value, record) => record.floor === value,
+          },
+          { title: '窗口数', dataIndex: 'window_count', key: 'window_count', sorter: (a, b) => a.window_count - b.window_count },
           {
             title: '操作',
             key: 'action',

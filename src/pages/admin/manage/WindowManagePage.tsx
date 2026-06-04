@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { windowApi, canteenApi } from '@/api/resources'
 import { getErrorDetail } from '@/api/error'
 import type { WindowResponse } from '@/types'
+import { buildFilters } from '@/utils/table'
 
 interface FormValues {
   window_id: string
@@ -117,14 +118,28 @@ export default function WindowManagePage() {
       <Table
         dataSource={data?.data}
         columns={[
-          { title: '窗口ID', dataIndex: 'window_id', key: 'window_id' },
-          { title: '名称', dataIndex: 'window_name', key: 'window_name' },
-          { title: '所属食堂', dataIndex: 'canteen_name', key: 'canteen_name' },
-          { title: '类型', dataIndex: 'window_type', key: 'window_type' },
+          { title: '窗口ID', dataIndex: 'window_id', key: 'window_id', sorter: (a, b) => a.window_id.localeCompare(b.window_id) },
+          { title: '名称', dataIndex: 'window_name', key: 'window_name', sorter: (a, b) => a.window_name.localeCompare(b.window_name) },
+          {
+            title: '所属食堂', dataIndex: 'canteen_name', key: 'canteen_name',
+            filters: buildFilters(data?.data ?? [], d => d.canteen_name),
+            onFilter: (value, record) => record.canteen_name === value,
+          },
+          {
+            title: '类型', dataIndex: 'window_type', key: 'window_type',
+            sorter: (a, b) => a.window_type.localeCompare(b.window_type),
+            filters: buildFilters(data?.data ?? [], d => d.window_type),
+            onFilter: (value, record) => record.window_type === value,
+          },
           {
             title: '状态',
             dataIndex: 'status',
             key: 'status',
+            filters: [
+              { text: '营业中', value: 1 },
+              { text: '已关闭', value: 0 },
+            ],
+            onFilter: (value, record) => record.status === value,
             render: (s: number, record) => (
               <Space>
                 <Tag color={s === 1 ? 'green' : 'red'}>{s === 1 ? '营业中' : '已关闭'}</Tag>

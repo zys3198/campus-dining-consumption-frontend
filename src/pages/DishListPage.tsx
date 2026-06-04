@@ -54,18 +54,28 @@ const DishListPage: React.FC = () => {
         </Space>
       ),
     },
-    { title: '窗口', dataIndex: 'window_name', key: 'window_name' },
-    { title: '分类', dataIndex: 'category', key: 'category', render: (c: string) => <Tag color="blue">{c}</Tag> },
+    { title: '窗口', dataIndex: 'window_name', key: 'window_name', sorter: (a: DishResponse, b: DishResponse) => (a.window_name ?? '').localeCompare(b.window_name ?? '') },
+    {
+      title: '分类', dataIndex: 'category', key: 'category',
+      sorter: (a: DishResponse, b: DishResponse) => a.category.localeCompare(b.category),
+      render: (c: string) => <Tag color="blue">{c}</Tag>,
+    },
     {
       title: '价格',
       dataIndex: 'price',
       key: 'price',
+      sorter: (a: DishResponse, b: DishResponse) => a.price - b.price,
       render: (p: number) => <span style={{ color: '#f5222d', fontWeight: 500 }}>¥{p.toFixed(2)}</span>,
     },
     {
       title: '供应',
       dataIndex: 'is_available',
       key: 'is_available',
+      filters: [
+        { text: '供应中', value: 1 },
+        { text: '已售罄', value: 0 },
+      ],
+      onFilter: (value: any, record: DishResponse) => record.is_available === value,
       render: (a: number) => a === 1 ? <Tag color="success">供应中</Tag> : <Tag>已售罄</Tag>,
     },
     {

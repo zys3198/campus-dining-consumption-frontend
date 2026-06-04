@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { dishApi, windowApi } from '@/api/resources'
 import { getErrorDetail } from '@/api/error'
 import type { DishResponse, DishCreate, DishUpdate } from '@/types'
+import { buildFilters } from '@/utils/table'
 
 interface FormValues {
   dish_id: string
@@ -116,15 +117,30 @@ export default function DishManagePage() {
       <Table
         dataSource={data?.data}
         columns={[
-          { title: '餐品ID', dataIndex: 'dish_id', key: 'dish_id' },
-          { title: '名称', dataIndex: 'dish_name', key: 'dish_name' },
-          { title: '价格', dataIndex: 'price', key: 'price', render: (p: number) => `¥${p.toFixed(2)}` },
-          { title: '分类', dataIndex: 'category', key: 'category', render: (c: string) => <Tag>{c}</Tag> },
-          { title: '窗口', dataIndex: 'window_name', key: 'window_name' },
+          { title: '餐品ID', dataIndex: 'dish_id', key: 'dish_id', sorter: (a, b) => a.dish_id.localeCompare(b.dish_id) },
+          { title: '名称', dataIndex: 'dish_name', key: 'dish_name', sorter: (a, b) => a.dish_name.localeCompare(b.dish_name) },
+          { title: '价格', dataIndex: 'price', key: 'price', sorter: (a, b) => a.price - b.price, render: (p: number) => `¥${p.toFixed(2)}` },
+          {
+            title: '分类', dataIndex: 'category', key: 'category',
+            sorter: (a, b) => a.category.localeCompare(b.category),
+            filters: buildFilters(data?.data ?? [], d => d.category),
+            onFilter: (value, record) => record.category === value,
+            render: (c: string) => <Tag>{c}</Tag>,
+          },
+          {
+            title: '窗口', dataIndex: 'window_name', key: 'window_name',
+            filters: buildFilters(data?.data ?? [], d => d.window_name),
+            onFilter: (value, record) => record.window_name === value,
+          },
           {
             title: '状态',
             dataIndex: 'is_available',
             key: 'is_available',
+            filters: [
+              { text: '在售', value: 1 },
+              { text: '停售', value: 0 },
+            ],
+            onFilter: (value, record) => record.is_available === value,
             render: (a: number) => <Tag color={a === 1 ? 'green' : 'default'}>{a === 1 ? '在售' : '停售'}</Tag>,
           },
           {
