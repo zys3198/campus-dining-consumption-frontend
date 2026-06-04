@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import type { RealtimeDashboard } from '@/types'
 
+const MAX_RETRIES = 20
 const MAX_RETRY_DELAY = 30_000
 const INITIAL_RETRY_DELAY = 1_000
 
@@ -32,6 +33,10 @@ export function useRealtimeSSE(url: string, enabled: boolean = true) {
 
       // 指数退避重连
       retryCountRef.current += 1
+      if (retryCountRef.current >= MAX_RETRIES) {
+        setError('连接失败，请刷新页面重试')
+        return
+      }
       const delay = Math.min(
         INITIAL_RETRY_DELAY * 2 ** retryCountRef.current,
         MAX_RETRY_DELAY,
