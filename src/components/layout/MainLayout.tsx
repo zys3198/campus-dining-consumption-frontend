@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet, useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Layout, Menu, Avatar, Dropdown, Space, Tag } from 'antd'
 import {
   HomeOutlined,
@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons'
 import { useAuthStore } from '@/stores/auth'
 import { ErrorBoundary } from '@/components/common/ErrorBoundary'
+import KeepAlive from '@/components/common/KeepAlive'
 
 const { Header, Content, Sider } = Layout
 
@@ -68,42 +69,41 @@ export const MainLayout: React.FC = () => {
       <Sider
         width={220}
         style={{
-          background: 'linear-gradient(180deg, #0F172A 0%, #1E293B 100%)',
+          background: '#FFFFFF',
           position: 'fixed',
           left: 0,
           top: 0,
           bottom: 0,
           overflow: 'auto',
-          boxShadow: '2px 0 12px rgba(0,0,0,0.2)',
+          borderRight: '1px solid var(--gray-200)',
         }}
       >
         {/* Logo */}
         <div style={{
-          padding: '22px 20px',
+          padding: '20px 20px 16px',
           display: 'flex',
           alignItems: 'center',
           gap: 10,
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid var(--gray-100)',
           marginBottom: 4,
         }}>
           <div style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: 'linear-gradient(135deg, #14B8A6, #0D9488)',
+            width: 34,
+            height: 34,
+            borderRadius: 8,
+            background: 'var(--accent-soft)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: 18,
-            flexShrink: 0,
           }}>
             🍜
           </div>
           <span style={{
-            color: '#F1F5F9',
-            fontSize: 17,
+            color: 'var(--gray-800)',
+            fontSize: 16,
             fontWeight: 700,
-            letterSpacing: '0.3px',
+            letterSpacing: '-0.01em',
           }}>
             校园食堂
           </span>
@@ -111,16 +111,11 @@ export const MainLayout: React.FC = () => {
 
         {/* Navigation */}
         <Menu
-          theme="dark"
+          theme="light"
           mode="inline"
           selectedKeys={[location.pathname]}
           items={menuItems}
           onClick={({ key }) => navigate(key)}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            padding: '0 4px',
-          }}
           className="sidebar-menu"
         />
       </Sider>
@@ -132,7 +127,7 @@ export const MainLayout: React.FC = () => {
           justifyContent: 'flex-end',
           padding: '0 32px',
           background: '#FFFFFF',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+          boxShadow: '0 1px 0 var(--gray-200)',
           position: 'sticky',
           top: 0,
           zIndex: 10,
@@ -162,21 +157,20 @@ export const MainLayout: React.FC = () => {
                 icon={<UserOutlined />}
                 style={{
                   backgroundColor: '#0D9488',
-                  boxShadow: '0 0 0 2px rgba(13,148,136,0.2)',
                 }}
               />
-              <span style={{ fontWeight: 500, color: '#1E293B' }}>{user?.name || user?.user_id}</span>
+              <span style={{ fontWeight: 500, color: 'var(--gray-700)' }}>{user?.name || user?.user_id}</span>
             </Space>
           </Dropdown>
         </Header>
 
         <Content style={{
           padding: '24px 28px',
-          background: '#F1F5F9',
+          background: 'var(--bg-page)',
           minHeight: 'calc(100vh - 64px)',
         }}>
           <ErrorBoundary>
-            <Outlet />
+            <KeepAlive />
           </ErrorBoundary>
         </Content>
       </Layout>

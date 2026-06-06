@@ -16,11 +16,11 @@ export const CongestionBar: React.FC<CongestionBarProps> = ({ data }) => {
     <List
       dataSource={data}
       renderItem={(item) => (
-        <List.Item style={{ borderBlockEnd: '1px solid #F1F5F9' }}>
+        <List.Item style={{ borderBlockEnd: '1px solid var(--gray-100)' }}>
           <div style={{ width: '100%' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span style={{ fontWeight: 500, color: '#1E293B' }}>{item.window_name}</span>
-              <span style={{ color: levelColor[item.level] || '#64748B', fontWeight: 600 }}>{item.level}</span>
+              <span style={{ fontWeight: 500, color: 'var(--gray-800)' }}>{item.window_name}</span>
+              <span style={{ color: levelColor[item.level] || '#6D7583', fontWeight: 600 }}>{item.level}</span>
             </div>
             <Progress
               percent={Math.min((item.avg_wait_seconds / 600) * 100, 100)}
@@ -28,7 +28,7 @@ export const CongestionBar: React.FC<CongestionBarProps> = ({ data }) => {
               showInfo={false}
               size="small"
             />
-            <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 4 }}>
+            <div style={{ fontSize: 12, color: 'var(--gray-400)', marginTop: 4 }}>
               平均等待 {item.avg_wait_seconds}s · 最大排队 {item.max_queue_length}人
             </div>
           </div>

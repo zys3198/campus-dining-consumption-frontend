@@ -15,15 +15,15 @@ export const MealBreakdownPie: React.FC<MealBreakdownPieProps> = ({ data }) => {
     tooltip: {
       trigger: 'item',
       formatter: '{b}: ¥{c} ({d}%)',
-      backgroundColor: '#1E293B',
-      borderColor: '#334155',
-      textStyle: { color: '#F1F5F9', fontSize: 13 },
+      backgroundColor: '#232A35',
+      borderColor: '#373F4C',
+      textStyle: { color: '#F2F4F7', fontSize: 13 },
     },
     legend: {
       bottom: 0,
-      textStyle: { color: '#64748B' },
+      textStyle: { color: '#6D7583' },
     },
-    color: ['#0D9488', '#F59E0B', '#6366F1', '#EF4444'],
+    color: ['#0D9488', '#F59E0B', '#6366F1', '#10B981'],
     series: [{
       type: 'pie',
       radius: ['45%', '72%'],

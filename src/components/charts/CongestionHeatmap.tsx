@@ -4,9 +4,9 @@ import type { HeatmapItem } from '@/types'
 
 const LEVELS = [
   { key: 'green', color: '#10B981', label: '畅通' },
-  { key: 'yellow', color: '#FBBF24', label: '轻微' },
+  { key: 'yellow', color: '#F59E0B', label: '轻微' },
   { key: 'red', color: '#EF4444', label: '拥堵' },
-  { key: 'darkred', color: '#7F1D1D', label: '严重' },
+  { key: 'darkred', color: '#991B1B', label: '严重' },
 ] as const
 
 const colorMap: Record<string, string> = Object.fromEntries(LEVELS.map(l => [l.key, l.color]))
@@ -59,18 +59,18 @@ export function CongestionHeatmap({ data }: { data: HeatmapItem[] }) {
         <thead>
           {/* Hour header row */}
           <tr>
-            <th style={{ position: 'sticky', left: 0, zIndex: 1, background: '#fff', padding: '4px 8px', textAlign: 'left', fontSize: 12, borderBottom: '1px solid #F1F5F9' }}>窗口</th>
+            <th style={{ position: 'sticky', left: 0, zIndex: 1, background: '#fff', padding: '4px 8px', textAlign: 'left', fontSize: 12, borderBottom: '1px solid var(--gray-100)' }}>窗口</th>
             {hourHeaders.map(h => (
-              <th key={h.label} colSpan={h.span} style={{ padding: '4px 2px', textAlign: 'center', fontSize: 11, color: '#64748B', borderBottom: '1px solid #F1F5F9' }}>
+              <th key={h.label} colSpan={h.span} style={{ padding: '4px 2px', textAlign: 'center', fontSize: 11, color: 'var(--gray-500)', borderBottom: '1px solid var(--gray-100)' }}>
                 {h.label}
               </th>
             ))}
           </tr>
           {/* Minute sub-header row */}
           <tr>
-            <th style={{ position: 'sticky', left: 0, zIndex: 1, background: '#fff', padding: '2px 8px', borderBottom: '1px solid #F1F5F9' }} />
+            <th style={{ position: 'sticky', left: 0, zIndex: 1, background: '#fff', padding: '2px 8px', borderBottom: '1px solid var(--gray-100)' }} />
             {slots.map(slot => (
-              <th key={slot} style={{ padding: '2px 0', textAlign: 'center', fontSize: 10, color: '#94A3B8', borderBottom: '1px solid #F1F5F9', minWidth: 28 }}>
+              <th key={slot} style={{ padding: '2px 0', textAlign: 'center', fontSize: 10, color: 'var(--gray-400)', borderBottom: '1px solid var(--gray-100)', minWidth: 28 }}>
                 {startOfSlot(slot).split(':')[1]}
               </th>
             ))}
@@ -79,18 +79,18 @@ export function CongestionHeatmap({ data }: { data: HeatmapItem[] }) {
         <tbody>
           {windows.map(w => (
             <tr key={w.id}>
-              <td style={{ position: 'sticky', left: 0, zIndex: 1, background: '#fff', padding: '4px 8px', fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap', borderBottom: '1px solid #F1F5F9' }}>
+              <td style={{ position: 'sticky', left: 0, zIndex: 1, background: '#fff', padding: '4px 8px', fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap', borderBottom: '1px solid var(--gray-100)' }}>
                 {w.name}
               </td>
               {slots.map(slot => {
                 const cell = matrix[`${w.id}::${slot}`]
                 if (!cell) {
-                  return <td key={slot} style={{ padding: 0, borderBottom: '1px solid #F1F5F9' }} />
+                  return <td key={slot} style={{ padding: 0, borderBottom: '1px solid var(--gray-100)' }} />
                 }
-                const bg = colorMap[cell.congestion_color ?? ''] || '#E2E8F0'
+                const bg = colorMap[cell.congestion_color ?? ''] || '#E4E8EE'
                 const level = cell.congestion_level ?? '未知'
                 return (
-                  <td key={slot} style={{ padding: 0, borderBottom: '1px solid #F1F5F9' }}>
+                  <td key={slot} style={{ padding: 0, borderBottom: '1px solid var(--gray-100)' }}>
                     <Tooltip title={`${w.name} ${slot}：平均等待 ${cell.avg_wait_duration.toFixed(0)}s（${level}）`}>
                       <div style={{ height: 24, minWidth: 28, background: bg, borderRadius: 2 }} />
                     </Tooltip>
@@ -102,7 +102,7 @@ export function CongestionHeatmap({ data }: { data: HeatmapItem[] }) {
         </tbody>
       </table>
       {/* Legend */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12, fontSize: 12, color: '#64748B' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12, fontSize: 12, color: 'var(--gray-500)' }}>
         <span>拥堵等级：</span>
         {LEVELS.map(l => (
           <span key={l.key} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>

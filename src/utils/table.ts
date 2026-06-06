@@ -18,8 +18,10 @@ export function buildFilters<T>(items: T[], extractor: (item: T) => string | und
  * 字母按字典序，数字按数值比较：W03 < W04 < W032, A10 > A2。
  */
 export function naturalCompare(a: string, b: string): number {
-  const segA = a.match(/\d+|\D+/g) ?? []
-  const segB = b.match(/\d+|\D+/g) ?? []
+  const aStr = a ?? ''
+  const bStr = b ?? ''
+  const segA = aStr.match(/\d+|\D+/g) ?? []
+  const segB = bStr.match(/\d+|\D+/g) ?? []
   const len = Math.min(segA.length, segB.length)
   for (let i = 0; i < len; i++) {
     const sa = segA[i]

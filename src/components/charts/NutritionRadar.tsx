@@ -25,26 +25,26 @@ export const NutritionRadar: React.FC<NutritionRadarProps> = ({ values, dri }) =
 
   const option = {
     tooltip: {
-      backgroundColor: '#1E293B',
-      borderColor: '#334155',
-      textStyle: { color: '#F1F5F9', fontSize: 13 },
+      backgroundColor: '#232A35',
+      borderColor: '#373F4C',
+      textStyle: { color: '#F2F4F7', fontSize: 13 },
     },
     legend: {
       data: ['摄入', 'DRI标准'],
       bottom: 0,
-      textStyle: { color: '#64748B' },
+      textStyle: { color: '#6D7583' },
     },
     radar: {
       indicator,
       shape: 'circle' as const,
       splitArea: {
         areaStyle: {
-          color: ['#F0FDFA', '#CCFBF1', '#F0FDFA', '#CCFBF1'],
+          color: ['#FCFDFD', '#F8F9FB', '#FCFDFD', '#F8F9FB'],
         },
       },
-      axisLine: { lineStyle: { color: '#E2E8F0' } },
-      splitLine: { lineStyle: { color: '#E2E8F0' } },
-      axisName: { color: '#64748B', fontSize: 11 },
+      axisLine: { lineStyle: { color: '#E4E8EE' } },
+      splitLine: { lineStyle: { color: '#E4E8EE' } },
+      axisName: { color: '#6D7583', fontSize: 11 },
     },
     series: [{
       type: 'radar',
@@ -52,14 +52,14 @@ export const NutritionRadar: React.FC<NutritionRadarProps> = ({ values, dri }) =
         {
           name: '摄入',
           value: intakeValue,
-          areaStyle: { color: 'rgba(13, 148, 136, 0.18)' },
+          areaStyle: { color: 'rgba(13, 148, 136, 0.10)' },
           lineStyle: { color: '#0D9488', width: 2 },
           itemStyle: { color: '#0D9488' },
         },
         {
           name: 'DRI标准',
           value: driValue,
-          areaStyle: { color: 'rgba(99, 102, 241, 0.08)' },
+          areaStyle: { color: 'rgba(99, 102, 241, 0.06)' },
           lineStyle: { color: '#6366F1', width: 2, type: 'dashed' as const },
           itemStyle: { color: '#6366F1' },
         },

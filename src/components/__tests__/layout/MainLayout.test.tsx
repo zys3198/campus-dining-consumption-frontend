@@ -71,6 +71,6 @@ describe('MainLayout', () => {
   it('should render brand title', () => {
     useAuthStore.setState({ token: 'token', user: createMockUserInfo({ role: 'student' }) })
     renderWithRouter()
-    expect(screen.getByText('🍜 校园食堂')).toBeInTheDocument()
+    expect(screen.getByText('校园食堂')).toBeInTheDocument()
   })
 })

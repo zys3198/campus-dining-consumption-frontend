@@ -16,23 +16,23 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ data, dataKey = 
   const option = {
     tooltip: {
       trigger: 'axis',
-      backgroundColor: '#1E293B',
-      borderColor: '#334155',
-      textStyle: { color: '#F1F5F9', fontSize: 13 },
+      backgroundColor: '#232A35',
+      borderColor: '#373F4C',
+      textStyle: { color: '#F2F4F7', fontSize: 13 },
     },
     grid: { left: '3%', right: '4%', bottom: '3%', top: '8%', containLabel: true },
     xAxis: {
       type: 'category',
       data: data.map(d => d.date),
       boundaryGap: false,
-      axisLine: { lineStyle: { color: '#E2E8F0' } },
-      axisLabel: { color: '#64748B', fontSize: 11 },
+      axisLine: { lineStyle: { color: '#E4E8EE' } },
+      axisLabel: { color: '#6D7583', fontSize: 11 },
     },
     yAxis: {
       type: 'value',
       axisLine: { show: false },
-      axisLabel: { color: '#64748B', fontSize: 11 },
-      splitLine: { lineStyle: { color: '#F1F5F9', type: 'dashed' } },
+      axisLabel: { color: '#6D7583', fontSize: 11 },
+      splitLine: { lineStyle: { color: '#E4E8EE', type: 'dashed' } },
     },
     series: [{
       name: dataKey === 'amount' ? '销售额' : '订单数',
@@ -46,7 +46,7 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ data, dataKey = 
           type: 'linear',
           x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
-            { offset: 0, color: 'rgba(13, 148, 136, 0.25)' },
+            { offset: 0, color: 'rgba(13, 148, 136, 0.15)' },
             { offset: 1, color: 'rgba(13, 148, 136, 0.02)' },
           ],
         },
