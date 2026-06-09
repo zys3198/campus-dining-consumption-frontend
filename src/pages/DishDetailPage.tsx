@@ -1,7 +1,7 @@
 import React from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Card, Descriptions, Image, Typography, Button, Spin, Row, Col, Statistic, Space } from 'antd'
-import { ArrowLeftOutlined, ShoppingCartOutlined } from '@ant-design/icons'
+import { useParams } from 'react-router-dom'
+import { Card, Descriptions, Image, Typography, Button, Spin, Row, Col, Statistic } from 'antd'
+import { ShoppingCartOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { dishApi } from '@/api/resources'
 
@@ -9,7 +9,6 @@ const { Title, Text } = Typography
 
 const DishDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
 
   const { data: dish, isLoading } = useQuery({
     queryKey: ['dish', id],
@@ -22,14 +21,9 @@ const DishDetailPage: React.FC = () => {
   if (!dish) return <Card><Text>餐品不存在</Text></Card>
 
   return (
-    <Card
-      title={
-        <Space>
-          <Button icon={<ArrowLeftOutlined />} onClick={() => navigate(-1)} />
-          <span>餐品详情</span>
-        </Space>
-      }
-    >
+    <div>
+      <div className="page-header">餐品详情</div>
+      <Card>
       <Row gutter={24}>
         <Col span={8}>
           <Image
@@ -107,6 +101,7 @@ const DishDetailPage: React.FC = () => {
         </Col>
       </Row>
     </Card>
+    </div>
   )
 }
 

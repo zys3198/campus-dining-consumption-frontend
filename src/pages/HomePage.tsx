@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
+      <div className="page-header">实时概览</div>
       {/* Stats Cards */}
       <Row gutter={16} style={{ marginBottom: 24 }}>
         <Col span={6}>

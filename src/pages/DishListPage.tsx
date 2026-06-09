@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Table, Card, Input, Select, Button, Space, Tag, Image, Typography } from 'antd'
+import { Table, Card, Input, Select, Button, Space, Tag, Image } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { dishApi, canteenApi } from '@/api/resources'
 import type { DishResponse } from '@/types'
 import { naturalCompare } from '@/utils/table'
-
-const { Title } = Typography
 
 const categoryOptions = [
   { value: '热菜', label: '热菜' },
@@ -91,8 +89,9 @@ const DishListPage: React.FC = () => {
   ]
 
   return (
-    <Card>
-      <Title level={4}>餐品浏览</Title>
+    <div>
+      <div className="page-header">餐品浏览</div>
+      <Card>
 
       <Space style={{ marginBottom: 16 }} wrap>
         <Select
@@ -134,6 +133,7 @@ const DishListPage: React.FC = () => {
         }}
       />
     </Card>
+    </div>
   )
 }
 

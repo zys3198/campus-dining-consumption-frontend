@@ -11,6 +11,7 @@ export default function StudentDashboardPage() {
 
   return (
     <div>
+      <div className="page-header">个人看板</div>
       <Row gutter={16}>
         <Col span={6}><StatCard title="近30天消费" value={data?.month_total_amount ?? 0} suffix="元" precision={2} /></Col>
         <Col span={6}><StatCard title="消费次数" value={data?.month_consumption_count ?? 0} suffix="次" /></Col>

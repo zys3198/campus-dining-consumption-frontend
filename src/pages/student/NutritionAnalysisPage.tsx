@@ -24,6 +24,7 @@ export default function NutritionAnalysisPage() {
 
   return (
     <div>
+      <div className="page-header">营养分析</div>
       <Row gutter={16}>
         <Col span={12}>
           <Card title="营养摄入趋势（30天）">

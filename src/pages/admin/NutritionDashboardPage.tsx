@@ -26,6 +26,7 @@ export default function NutritionDashboardPage() {
 
   return (
     <div>
+      <div className="page-header">营养看板</div>
       <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
         <span style={{ color: '#64748B', fontSize: 14 }}>选择日期：</span>
         <DatePicker

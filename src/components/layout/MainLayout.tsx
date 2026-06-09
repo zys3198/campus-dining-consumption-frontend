@@ -76,11 +76,12 @@ export const MainLayout: React.FC = () => {
           bottom: 0,
           overflow: 'auto',
           borderRight: '1px solid var(--gray-200)',
+          zIndex: 20,
         }}
       >
         {/* Logo */}
         <div style={{
-          padding: '20px 20px 16px',
+          padding: '22px 20px 18px',
           display: 'flex',
           alignItems: 'center',
           gap: 10,
@@ -91,22 +92,35 @@ export const MainLayout: React.FC = () => {
             width: 34,
             height: 34,
             borderRadius: 8,
-            background: 'var(--accent-soft)',
+            background: 'var(--accent-gradient)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: 18,
+            boxShadow: '0 2px 6px rgba(13, 148, 136, 0.25)',
           }}>
             🍜
           </div>
-          <span style={{
-            color: 'var(--gray-800)',
-            fontSize: 16,
-            fontWeight: 700,
-            letterSpacing: '-0.01em',
-          }}>
-            校园食堂
-          </span>
+          <div>
+            <div style={{
+              color: 'var(--gray-800)',
+              fontSize: 16,
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              lineHeight: 1.3,
+            }}>
+              校园食堂
+            </div>
+            <div style={{
+              color: 'var(--gray-400)',
+              fontSize: 11,
+              fontWeight: 500,
+              letterSpacing: '0.02em',
+              lineHeight: 1.2,
+            }}>
+              消费管理系统
+            </div>
+          </div>
         </div>
 
         {/* Navigation */}
@@ -126,8 +140,10 @@ export const MainLayout: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'flex-end',
           padding: '0 32px',
-          background: '#FFFFFF',
-          boxShadow: '0 1px 0 var(--gray-200)',
+          background: 'var(--glass-bg)',
+          backdropFilter: 'var(--glass-blur)',
+          WebkitBackdropFilter: 'var(--glass-blur)',
+          borderBottom: '1px solid var(--gray-200)',
           position: 'sticky',
           top: 0,
           zIndex: 10,
@@ -138,8 +154,14 @@ export const MainLayout: React.FC = () => {
             color={roleTagColor[user?.role as keyof typeof roleTagColor]}
             style={{
               marginRight: 16,
-              borderRadius: 6,
+              borderRadius: 'var(--radius-md)',
               fontWeight: 500,
+              padding: '2px 14px',
+              lineHeight: '24px',
+              height: 26,
+              display: 'flex',
+              alignItems: 'center',
+              border: 'none',
             }}
           >
             {roleLabel[user?.role as keyof typeof roleLabel]}

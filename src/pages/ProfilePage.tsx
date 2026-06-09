@@ -15,7 +15,8 @@ const ProfilePage: React.FC = () => {
   })
 
   return (
-    <Card>
+    <div>
+      <div className="page-header">个人中心</div>
       <Row gutter={24}>
         <Col span={6}>
           <Card style={{ textAlign: 'center' }}>
@@ -68,7 +69,7 @@ const ProfilePage: React.FC = () => {
           </Card>
         </Col>
       </Row>
-    </Card>
+    </div>
   )
 }
 

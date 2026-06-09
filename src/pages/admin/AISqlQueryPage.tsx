@@ -16,6 +16,7 @@ export default function AISqlQueryPage() {
 
   return (
     <div>
+      <div className="page-header">AI 查询</div>
       <Card title="自然语言查询">
         <TextArea
           rows={2}
