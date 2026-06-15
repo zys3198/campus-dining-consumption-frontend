@@ -34,7 +34,7 @@ describe('LoginPage', () => {
 
   it('should render login form with title', () => {
     renderLoginPage()
-    expect(screen.getByText('校园食堂')).toBeInTheDocument()
+    expect(screen.getByText('欢迎回来！')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('用户名')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('密码')).toBeInTheDocument()
   })
