@@ -218,12 +218,18 @@ const LoginPage: React.FC = () => {
         let heightScale = 1
 
         if (isHiding) {
-          if (idx === 0) { skew = pos.bodySkew - 12; translateX = 40; heightScale = 1.1 }
+          if (idx === 0) { skew = -6; translateX = -14 }
           else if (idx === 1) { skew = pos.bodySkew * 1.5 }
         } else if (isShowingPw) {
           skew = 0
         } else if (state.lookingAtEachOther && idx === 1) {
           skew = 10; translateX = 20
+        }
+
+        // Char-1 mirror: tilt left instead of right to avoid eye overlap with char-2
+        if (idx === 0 && !isHiding) {
+          skew = -skew
+          translateX = -translateX
         }
 
         body.style.transform = `skewX(${skew}deg) translateX(${translateX}px) scaleY(${heightScale})`
